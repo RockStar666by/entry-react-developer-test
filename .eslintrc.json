@@ -13,7 +13,7 @@
   },
   "plugins": ["react"],
   "rules": {
-    "jsx-quotes": [2, "prefer-single"],
+    "jsx-quotes": [2, "prefer-double"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "comma-dangle": [
       "error",
@@ -35,6 +35,7 @@
       }
     ],
     "import/prefer-default-export": "off",
-    "react/prefer-stateless-function": "off"
+    "react/prefer-stateless-function": "off",
+    "react/destructuring-assignment": "off"
   }
 }

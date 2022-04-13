@@ -1,16 +1,27 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Normalize } from 'styled-normalize';
-import './index.css';
+import { Reset } from 'styled-reset';
+import { createGlobalStyle } from 'styled-components';
 import { App } from './components/App/App';
 import reportWebVitals from './reportWebVitals';
+
+const GlobalStyle = createGlobalStyle`
+body {
+  margin: 0;
+  font-family: 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+`;
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <Normalize />
+    <Reset />
+    <GlobalStyle />
     <App />
   </React.StrictMode>
 );
