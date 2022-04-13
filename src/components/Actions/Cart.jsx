@@ -8,6 +8,9 @@ const CartButton = styled.button`
   width: 40px;
   height: 40px;
   background: url(${CartIcon}) center no-repeat;
+  &:hover {
+    filter: invert(71%) sepia(62%) saturate(350%) hue-rotate(82deg) brightness(88%) contrast(93%);
+  }
 `;
 
 const CartBadge = styled.div`

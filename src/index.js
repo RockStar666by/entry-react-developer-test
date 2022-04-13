@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { Reset } from 'styled-reset';
 import { createGlobalStyle } from 'styled-components';
@@ -22,7 +23,9 @@ root.render(
   <React.StrictMode>
     <Reset />
     <GlobalStyle />
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </React.StrictMode>
 );
 

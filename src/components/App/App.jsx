@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AppRouting } from '../../feature/Routing';
 import { Header } from '../Header/Header';
 
 const AppContainer = styled.div`
@@ -15,9 +16,9 @@ const AppContainer = styled.div`
 export class App extends React.Component {
   render() {
     return (
-      <AppContainer className='App'>
+      <AppContainer className="App">
         <Header />
-        <span>hello world</span>
+        <AppRouting />
       </AppContainer>
     );
   }
