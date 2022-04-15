@@ -69,7 +69,7 @@ const options = ['$ USD', '€ EUR', '¥ JPY'];
 export class CurrencySwitcher extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { option: '$ USD', isOpen: false };
+    this.state = { currentOption: '$ USD', isOpen: false };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleToggling = this.handleToggling.bind(this);
@@ -94,7 +94,7 @@ export class CurrencySwitcher extends React.Component {
 
   handleChange(event) {
     console.log(this.state);
-    this.setState({ option: event.target.value });
+    this.setState({ currentOption: event.target.value });
   }
 
   handleToggling() {
@@ -103,7 +103,7 @@ export class CurrencySwitcher extends React.Component {
 
   onOptionClicked(value) {
     return () => {
-      this.setState({ option: value });
+      this.setState({ currentOption: value });
       this.setState({ isOpen: false });
       console.log(value);
     };
@@ -114,16 +114,16 @@ export class CurrencySwitcher extends React.Component {
       <ThemeProvider theme={theme}>
         <DropDownContainer ref={this.wrapperRef}>
           <DropDownHeader onClick={this.handleToggling}>
-            <span>{this.state.option.substring(0, 1)}</span>
+            <span>{this.state.currentOption.substring(0, 1)}</span>
             {this.state.isOpen ? <Arrow /> : <Arrow rotate="true" />}
           </DropDownHeader>
           {this.state.isOpen && (
             <DropDownListContainer>
               <DropDownList>
-                {options.map((option1) => (
-                  <ListItem onClick={this.onOptionClicked(option1)} key={Math.random()}>
-                    {option1}
-                    {this.state.option === option1 && <Checked />}
+                {options.map((option) => (
+                  <ListItem onClick={this.onOptionClicked(option)} key={Math.random()}>
+                    {option}
+                    {this.state.currentOption === option && <Checked />}
                   </ListItem>
                 ))}
               </DropDownList>

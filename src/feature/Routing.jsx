@@ -11,7 +11,7 @@ export class AppRouting extends React.Component {
         <Route path="/" element={<CategoryPage />} />
         <Route path="/tech" element={<CategoryPage product="Tech" />} />
         <Route path="/clothes" element={<CategoryPage product="Clothes" />} />
-        <Route path="/:productId" element={<ProductPage />} />
+        <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
       </Routes>
     );

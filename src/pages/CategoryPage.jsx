@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import { ProductCard } from '../components/ProductCard/ProductCard';
 
 const CategoryPageContainer = styled.div`
   position: relative;
@@ -17,7 +18,8 @@ export class CategoryPage extends React.Component {
     return (
       <CategoryPageContainer>
         <h1>{this.props.product}</h1>
-        <NavLink to="/clothes/10">CLOTHES</NavLink>
+        <NavLink to="/product/10">Product</NavLink>
+        <ProductCard />
       </CategoryPageContainer>
     );
   }
