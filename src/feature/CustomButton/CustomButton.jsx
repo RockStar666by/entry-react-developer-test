@@ -34,11 +34,11 @@ const ButtonContainer = styled.button`
 
 export class CustomButton extends React.Component {
   render() {
-    const { buttonText, small, filled, actionOnClick, wide } = this.props;
+    const { children, small, filled, actionOnClick, wide } = this.props;
     return (
       <ThemeProvider theme={theme}>
         <ButtonContainer small={small} filled={filled} wide={wide} onClick={actionOnClick}>
-          {buttonText}
+          {children}
         </ButtonContainer>
       </ThemeProvider>
     );
@@ -46,7 +46,7 @@ export class CustomButton extends React.Component {
 }
 
 CustomButton.propTypes = {
-  buttonText: PropTypes.string.isRequired,
+  children: PropTypes.string,
   small: PropTypes.bool,
   filled: PropTypes.bool,
   wide: PropTypes.bool,
@@ -54,6 +54,7 @@ CustomButton.propTypes = {
 };
 
 CustomButton.defaultProps = {
+  children: 'BUTTON',
   small: false,
   filled: false,
   wide: false,

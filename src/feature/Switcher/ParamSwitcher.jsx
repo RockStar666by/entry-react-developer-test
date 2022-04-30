@@ -10,6 +10,7 @@ const ParamListContainer = styled.div`
 
 const ParamHeader = styled.p`
   height: 18px;
+  font-family: Roboto Condensed;
   font-weight: 700;
   font-size: 18px;
   line-height: 18px;
@@ -22,31 +23,32 @@ const ParamList = styled.ul`
   gap: ${(props) => (props.mini ? '8px' : '12px')}; ;
 `;
 
-const MiniListItem = css`
+const SmallListItem = css`
   min-width: 24px;
   height: 24px;
   line-height: 24px;
   font-size: 14px;
-  padding: 0 6px;
+  padding: 0 3px;
 `;
 
-const MaxListItem = css`
+const BigListItem = css`
   min-width: 63px;
   height: 45px;
   line-height: 45px;
   font-size: 18px;
-  padding: 0 22px;
+  padding: 0 10px;
 `;
 
 const ListItem = styled.li`
   cursor: pointer;
+  font-family: Source Sans Pro;
   font-weight: 400;
   text-align: center;
   list-style: none;
   box-sizing: border-box;
   border: 1px solid black;
   background: ${(props) => props.active && 'black'};
-  ${(props) => (props.mini ? `${MiniListItem}` : `${MaxListItem}`)};
+  ${(props) => (props.mini ? `${SmallListItem}` : `${BigListItem}`)};
   color: ${(props) => props.active && 'white'};
   &:hover {
     color: white;

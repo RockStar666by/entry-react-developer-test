@@ -150,7 +150,7 @@ export class ProductCard extends React.Component {
                 <ParamSwitcher mini header="SIZE:" options={['S', 'M', 'L', 'XXXL', 'S', 'M', 'L', 'S', 'M']} />
                 <ParamSwitcher mini header="COLOR:" options={['S', 'M', 'L', 'XXXL', 'S', 'M', 'L', 'S', 'M']} />
                 <Counter />
-                <CustomButton buttonText="ADD TO CART" wide />
+                <CustomButton wide>ADD TO CART</CustomButton>
               </CartInfoContainer>
             </CartOverlay>
           )}

@@ -9,11 +9,12 @@ import reportWebVitals from './reportWebVitals';
 const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
-  font-family: 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+  font-family: 'Raleway', 'Roboto Condensed', 'Source Sans Pro', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 `;
 
 const rootElement = document.getElementById('root');
