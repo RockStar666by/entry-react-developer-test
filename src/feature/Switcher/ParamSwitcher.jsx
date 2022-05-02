@@ -23,7 +23,7 @@ const ParamList = styled.ul`
   gap: ${(props) => (props.mini ? '8px' : '12px')}; ;
 `;
 
-const SmallListItem = css`
+const SmallTextListItem = css`
   min-width: 24px;
   height: 24px;
   line-height: 24px;
@@ -31,7 +31,7 @@ const SmallListItem = css`
   padding: 0 3px;
 `;
 
-const BigListItem = css`
+const BigTextListItem = css`
   min-width: 63px;
   height: 45px;
   line-height: 45px;
@@ -48,19 +48,44 @@ const ListItem = styled.li`
   box-sizing: border-box;
   border: 1px solid black;
   background: ${(props) => props.active && 'black'};
-  ${(props) => (props.mini ? `${SmallListItem}` : `${BigListItem}`)};
+  ${(props) => (props.mini ? `${SmallTextListItem}` : `${BigTextListItem}`)};
   color: ${(props) => props.active && 'white'};
   &:hover {
     color: white;
     background: ${(props) => props.theme.primary};
     border-color: ${(props) => props.theme.primary};
   }
+  &:before {
+    content: '${(props) => props.value}';
+  }
+`;
+
+const SmallColorListItem = css`
+  width: 16px;
+  height: 16px;
+`;
+
+const BigColorListItem = css`
+  width: 32px;
+  height: 32px;
+`;
+
+const ColorItem = styled.li`
+  cursor: pointer;
+  background: ${(props) => props.value};
+  ${(props) => (props.mini ? `${SmallColorListItem}` : `${BigColorListItem}`)};
+  outline: ${(props) => props.active && `2px solid ${props.theme.primary}`};
+  outline-offset: 1px;
+  &:hover {
+    color: white;
+    outline: 2px solid ${(props) => props.theme.primary};
+  }
 `;
 
 export class ParamSwitcher extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentOption: null };
+    this.state = { currentOption: this.props.options[0] };
     this.handleChange = this.handleChange.bind(this);
     this.onOptionClicked = this.onOptionClicked.bind(this);
   }
@@ -78,17 +103,34 @@ export class ParamSwitcher extends React.Component {
   }
 
   render() {
-    const { mini, options, header } = this.props;
+    const { mini, options, header, attrType } = this.props;
     return (
       <ThemeProvider theme={theme}>
         <ParamListContainer>
           <ParamHeader>{header}</ParamHeader>
           <ParamList mini={mini}>
-            {options.map((option) => (
-              <ListItem mini={mini} onClick={this.onOptionClicked(option)} active={this.state.currentOption === option} key={Math.random()}>
-                {option}
-              </ListItem>
-            ))}
+            {options.map(
+              // eslint-disable-next-line
+              (option) =>
+                attrType === 'text' ? (
+                  <ListItem
+                    mini={mini}
+                    value={option.value}
+                    onClick={this.onOptionClicked(option)}
+                    active={this.state.currentOption.id === option.id}
+                    key={option.id}
+                  />
+                ) : (
+                  <ColorItem
+                    mini={mini}
+                    value={option.value}
+                    onClick={this.onOptionClicked(option)}
+                    active={this.state.currentOption.id === option.id}
+                    key={option.id}
+                  />
+                )
+              // eslint-disable-next-line
+            )}
           </ParamList>
         </ParamListContainer>
       </ThemeProvider>
@@ -98,7 +140,8 @@ export class ParamSwitcher extends React.Component {
 
 ParamSwitcher.propTypes = {
   mini: PropTypes.bool,
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
+  attrType: PropTypes.string.isRequired,
   header: PropTypes.string.isRequired
 };
 

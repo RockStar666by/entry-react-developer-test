@@ -102,8 +102,10 @@ export class ProductPage extends React.Component {
     this.state = { productData: {}, loading: true };
   }
 
+  // jacket-canada-goosee
+
   componentDidMount() {
-    client.query({ query: PRODUCT_PAGE, variables: { product: 'jacket-canada-goosee' } }).then((result) => {
+    client.query({ query: PRODUCT_PAGE, variables: { product: 'ps-5' } }).then((result) => {
       console.log(result);
       this.setState({ productData: result.data.product, loading: result.data.loading });
       console.log(this.state);
@@ -112,7 +114,8 @@ export class ProductPage extends React.Component {
 
   render() {
     const { loading } = this.state;
-    const { brand, name, description, inStock, gallery, prices } = this.state.productData;
+    const { brand, name, description, inStock, gallery, prices, attributes } = this.state.productData;
+    console.log(attributes);
     return loading ? (
       <p>LOADING...</p>
     ) : (
@@ -122,9 +125,18 @@ export class ProductPage extends React.Component {
           <ProductInfoHeader>{brand}</ProductInfoHeader>
           <ProductInfoType>{name}</ProductInfoType>
 
-          {inStock ? (
+          {!inStock ? (
             <>
-              <ParamSwitcher header="SIZE:" options={['S', 'M', 'L', 'XL']} />
+              {[...attributes]
+                .sort((b, a) => a.type.localeCompare(b.type))
+                .map((attribute) => (
+                  <ParamSwitcher
+                    key={attribute.id}
+                    header={`${attribute.name.toUpperCase()}:`}
+                    options={attribute.items}
+                    attrType={attribute.type}
+                  />
+                ))}
               <PriceContainer>
                 <PriceHeader>PRICE:</PriceHeader>
                 <PriceTag>

@@ -38,6 +38,8 @@
     "react/prefer-stateless-function": "off",
     "react/destructuring-assignment": "off",
     "max-len": ["error", { "code": 140 }],
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "implicit-arrow-linebreak": "off",
+    "operator-linebreak": "off"
   }
 }
