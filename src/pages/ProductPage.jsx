@@ -1,8 +1,42 @@
 import React from 'react';
 import styled from 'styled-components';
+import { gql } from '@apollo/client';
+import { Markup } from 'interweave';
 import { CustomButton } from '../feature/CustomButton/CustomButton';
 import { Gallery } from '../feature/Gallery/Gallery';
 import { ParamSwitcher } from '../feature/Switcher/ParamSwitcher';
+import { client } from '../apollo/apollo';
+
+const PRODUCT_PAGE = gql`
+  query GetProduct($product: String!) {
+    product(id: $product) {
+      id
+      name
+      inStock
+      gallery
+      description
+      category
+      attributes {
+        id
+        name
+        type
+        items {
+          displayValue
+          value
+          id
+        }
+      }
+      prices {
+        currency {
+          label
+          symbol
+        }
+        amount
+      }
+      brand
+    }
+  }
+`;
 
 const ProductPageContainer = styled.div`
   position: relative;
@@ -54,7 +88,7 @@ const PriceTag = styled.p`
   line-height: 46px;
 `;
 
-const Description = styled.p`
+const Description = styled.div`
   margin-top: 40px;
   font-family: Roboto;
   font-weight: 400;
@@ -63,22 +97,54 @@ const Description = styled.p`
 `;
 
 export class ProductPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { productData: {}, loading: true };
+  }
+
+  componentDidMount() {
+    client.query({ query: PRODUCT_PAGE, variables: { product: 'jacket-canada-goosee' } }).then((result) => {
+      console.log(result);
+      this.setState({ productData: result.data.product, loading: result.data.loading });
+      console.log(this.state);
+    });
+  }
+
   render() {
-    return (
+    const { loading } = this.state;
+    const { brand, name, description, inStock, gallery, prices } = this.state.productData;
+    return loading ? (
+      <p>LOADING...</p>
+    ) : (
       <ProductPageContainer>
-        <Gallery />
+        <Gallery gallery={gallery} />
         <ProductInfoContainer>
-          <ProductInfoHeader>Apollo</ProductInfoHeader>
-          <ProductInfoType>Running Short</ProductInfoType>
-          <ParamSwitcher header="SIZE:" options={['S', 'M', 'L', 'XL']} />
-          <PriceContainer>
-            <PriceHeader>PRICE:</PriceHeader>
-            <PriceTag>$50.00</PriceTag>
-          </PriceContainer>
-          <CustomButton>ADD TO CART</CustomButton>
+          <ProductInfoHeader>{brand}</ProductInfoHeader>
+          <ProductInfoType>{name}</ProductInfoType>
+
+          {inStock ? (
+            <>
+              <ParamSwitcher header="SIZE:" options={['S', 'M', 'L', 'XL']} />
+              <PriceContainer>
+                <PriceHeader>PRICE:</PriceHeader>
+                <PriceTag>
+                  {prices[0].currency.symbol}
+                  {prices[0].amount}
+                </PriceTag>
+              </PriceContainer>
+              <CustomButton>ADD TO CART</CustomButton>
+            </>
+          ) : (
+            <>
+              <PriceContainer>
+                <PriceTag>OUT OF STOCK</PriceTag>
+              </PriceContainer>
+              <CustomButton>ADD TO WISHLIST</CustomButton>
+            </>
+          )}
+
           <Description>
-            Find stunning women&apos;s cocktail dresses and party dresses. Stand out in lace and metallic cocktail dresses and party dresses
-            from all your favorite brands.
+            <Markup noWrap content={description} />
           </Description>
         </ProductInfoContainer>
       </ProductPageContainer>

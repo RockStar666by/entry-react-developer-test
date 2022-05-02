@@ -1,8 +1,6 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
-
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = { primary: '#5ece7b' };
 
@@ -13,7 +11,6 @@ const GalleryContainer = styled.div`
   width: 730px;
   height: 510px;
   margin-right: 100px;
-  background: lightgray;
 `;
 
 const ImagesSlider = styled.div`
@@ -24,7 +21,6 @@ const ImagesSlider = styled.div`
   width: 97px;
   height: 480px;
   margin-right: 23px;
-  background: lightgreen;
   &:hover {
     overflow-y: auto;
   }
@@ -52,15 +48,20 @@ const MiniImage = styled.div`
   width: 80px;
   height: 80px;
   box-sizing: border-box;
-  border: 1px solid black;
-  background: blue;
+  border: 2px solid transparent;
+  background: url(${(props) => props.bgImage}) center no-repeat;
+  background-size: cover;
+  &:hover {
+    border-color: ${(props) => props.theme.primary};
+  }
 `;
 
 const SelectedImage = styled.div`
   position: relative;
   width: 610px;
   height: 510px;
-  background: lightgreen;
+  background: url(${(props) => props.bgImage}) center no-repeat;
+  background-size: contain;
 `;
 
 // const ParamHeader = styled.p`
@@ -115,9 +116,13 @@ const SelectedImage = styled.div`
 export class Gallery extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentOption: null };
+    this.state = { currentPicture: null };
     this.handleChange = this.handleChange.bind(this);
-    this.onOptionClicked = this.onOptionClicked.bind(this);
+    this.onPictureClicked = this.onPictureClicked.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ currentPicture: this.props.gallery[0] });
   }
 
   handleChange(event) {
@@ -125,32 +130,29 @@ export class Gallery extends React.Component {
     this.setState({ currentOption: event.target.value });
   }
 
-  onOptionClicked(value) {
+  onPictureClicked(value) {
     return () => {
-      this.setState({ currentOption: value });
+      this.setState({ currentPicture: value });
       console.log(value);
     };
   }
 
   render() {
-    // const { mini, options, header } = this.props;
+    const { currentPicture } = this.state;
+    const { gallery } = this.props;
     return (
       <ThemeProvider theme={theme}>
         <GalleryContainer>
           <ImagesSlider>
-            {arr.map((index) => (
-              <MiniImage key={index} />
+            {gallery.map((elem) => (
+              <MiniImage key={elem} bgImage={elem} onClick={this.onPictureClicked(elem)} />
             ))}
           </ImagesSlider>
-          <SelectedImage>selected</SelectedImage>
+          <SelectedImage bgImage={currentPicture} />
         </GalleryContainer>
       </ThemeProvider>
     );
   }
 }
 
-// ParamSwitcher.propTypes = {
-//   mini: PropTypes.bool,
-//   options: PropTypes.arrayOf(PropTypes.string).isRequired,
-//   header: PropTypes.string.isRequired
-// };
+Gallery.propTypes = { gallery: PropTypes.arrayOf(PropTypes.string).isRequired };

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import ArrowImage from '../../assets/dropdown-arrow.svg';
-import CheckedIcon from '../../assets/check-mark.svg';
 
 const theme = { primary: '#5ece7b' };
 
@@ -11,6 +10,7 @@ const DropDownContainer = styled.div`
   width: 40px;
   font-weight: 500;
   font-size: 18px;
+  z-index: 10;
 `;
 
 const DropDownHeader = styled.div`
@@ -55,14 +55,6 @@ const Arrow = styled.img`
 `;
 
 Arrow.defaultProps = { src: ArrowImage };
-
-const Checked = styled.img`
-  margin-left: 10px;
-  width: 15px;
-  height: 15px;
-`;
-
-Checked.defaultProps = { src: CheckedIcon };
 
 const options = ['$ USD', '€ EUR', '¥ JPY'];
 
@@ -123,7 +115,6 @@ export class CurrencySwitcher extends React.Component {
                 {options.map((option) => (
                   <ListItem onClick={this.onOptionClicked(option)} key={Math.random()}>
                     {option}
-                    {this.state.currentOption === option && <Checked />}
                   </ListItem>
                 ))}
               </DropDownList>

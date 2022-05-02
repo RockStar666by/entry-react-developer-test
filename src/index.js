@@ -1,8 +1,10 @@
 import React from 'react';
+import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { Reset } from 'styled-reset';
 import { createGlobalStyle } from 'styled-components';
+import { client } from './apollo/apollo';
 import { App } from './components/App/App';
 import reportWebVitals from './reportWebVitals';
 
@@ -14,7 +16,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 `;
 
 const rootElement = document.getElementById('root');
@@ -24,9 +25,11 @@ root.render(
   <React.StrictMode>
     <Reset />
     <GlobalStyle />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <ApolloProvider client={client}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ApolloProvider>
   </React.StrictMode>
 );
 
