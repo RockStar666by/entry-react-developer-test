@@ -1,5 +1,7 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import { gql } from '@apollo/client';
 import { Markup } from 'interweave';
 import { CustomButton } from '../feature/CustomButton/CustomButton';
@@ -47,13 +49,11 @@ const ProductPageContainer = styled.div`
   align-items: flex-start;
   box-sizing: border-box;
   padding: 80px 100px 0;
-  background: pink;
 `;
 
 const ProductInfoContainer = styled.article`
   width: 292px;
   min-height: 510px;
-  background: lightgray;
 `;
 
 const ProductInfoHeader = styled.h2`
@@ -94,7 +94,33 @@ const Description = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
+
+  h1 {
+    display: block;
+    font-size: 2em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+
+  h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+  }
 `;
+
+// eslint-disable-next-line
+const withRouter = (WrappedComponent) => () => {
+  const match = { params: useParams() };
+  return <WrappedComponent match={match} />;
+};
 
 export class ProductPage extends React.Component {
   constructor(props) {
@@ -105,17 +131,15 @@ export class ProductPage extends React.Component {
   // jacket-canada-goosee
 
   componentDidMount() {
-    client.query({ query: PRODUCT_PAGE, variables: { product: 'ps-5' } }).then((result) => {
+    client.query({ query: PRODUCT_PAGE, variables: { product: this.props.match.params.productId } }).then((result) => {
       console.log(result);
       this.setState({ productData: result.data.product, loading: result.data.loading });
-      console.log(this.state);
     });
   }
 
   render() {
     const { loading } = this.state;
     const { brand, name, description, inStock, gallery, prices, attributes } = this.state.productData;
-    console.log(attributes);
     return loading ? (
       <p>LOADING...</p>
     ) : (
@@ -125,7 +149,7 @@ export class ProductPage extends React.Component {
           <ProductInfoHeader>{brand}</ProductInfoHeader>
           <ProductInfoType>{name}</ProductInfoType>
 
-          {!inStock ? (
+          {inStock ? (
             <>
               {[...attributes]
                 .sort((b, a) => a.type.localeCompare(b.type))
@@ -163,3 +187,7 @@ export class ProductPage extends React.Component {
     );
   }
 }
+
+export const ProductPageWithRouter = withRouter(ProductPage);
+
+ProductPage.propTypes = { match: PropTypes.shape({ params: PropTypes.shape({ productId: PropTypes.string }) }).isRequired };

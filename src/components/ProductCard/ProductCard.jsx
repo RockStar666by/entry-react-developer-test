@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { ThemeProvider, keyframes } from 'styled-components';
-import BagImage from '../../assets/bag.png';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import CartIcon from '../../assets/cart-icon-white.svg';
 import { Counter } from '../../feature/Counter/Counter';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
@@ -27,12 +28,17 @@ const ProductCardContainer = styled.div`
   }
 `;
 
+const ProductCardBox = styled(Link)`
+  text-decoration: none;
+  color: black;
+`;
+
 const ProductImage = styled.div`
   margin: 16px;
   height: 330px;
   width: 354px;
-  background: url(${BagImage}) center no-repeat;
-  background-size: 190%;
+  background: url(${(props) => props.bgImage}) center no-repeat;
+  background-size: contain;
   border: none;
 `;
 
@@ -109,7 +115,7 @@ const CartInfoContainer = styled.div`
   animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s 1 ${slideInFromBottom};
 `;
 
-export class ProductCard extends React.Component {
+export class ProductCard extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = { isCartClicked: false };
@@ -141,29 +147,63 @@ export class ProductCard extends React.Component {
 
   render() {
     const { isCartClicked } = this.state;
+    const { id, brand, name, gallery, attributes, prices } = this.props;
+    console.log(id);
     return (
       <ThemeProvider theme={theme}>
         <ProductCardContainer isCartClicked={isCartClicked} ref={this.cartRef}>
           {isCartClicked && (
             <CartOverlay>
               <CartInfoContainer>
-                <ParamSwitcher mini header="SIZE:" options={['S', 'M', 'L', 'XXXL', 'S', 'M', 'L', 'S', 'M']} />
-                <ParamSwitcher mini header="COLOR:" options={['S', 'M', 'L', 'XXXL', 'S', 'M', 'L', 'S', 'M']} />
+                {[...attributes]
+                  .sort((b, a) => a.type.localeCompare(b.type))
+                  .map((attribute) => (
+                    <ParamSwitcher
+                      key={attribute.id}
+                      mini
+                      header={`${attribute.name.toUpperCase()}:`}
+                      options={attribute.items}
+                      attrType={attribute.type}
+                    />
+                  ))}
                 <Counter />
                 <CustomButton wide>ADD TO CART</CustomButton>
               </CartInfoContainer>
             </CartOverlay>
           )}
-          <ProductImage>
-            <ProductBadge>-50%</ProductBadge>
-            <CartButton className="cart-button" onClick={this.handleCartClicked} />
-          </ProductImage>
-          <ProductDescription>
-            <ProductHeader>Apollo Running Short</ProductHeader>
-            <ProductPrice>$50.00</ProductPrice>
-          </ProductDescription>
+          <ProductCardBox to={`/product/${id}`}>
+            <ProductImage bgImage={gallery[0]}>
+              <ProductBadge>-50%</ProductBadge>
+            </ProductImage>
+            <ProductDescription>
+              <ProductHeader>{`${brand} ${name}`}</ProductHeader>
+              <ProductPrice>{`$${prices[0].amount}`}</ProductPrice>
+            </ProductDescription>
+          </ProductCardBox>
+          <CartButton className="cart-button" onClick={this.handleCartClicked} />
         </ProductCardContainer>
       </ThemeProvider>
     );
   }
 }
+
+ProductCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  brand: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  gallery: PropTypes.arrayOf(PropTypes.string).isRequired,
+  attributes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      type: PropTypes.string,
+      items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
+    })
+  ).isRequired,
+  prices: PropTypes.arrayOf(
+    PropTypes.shape({
+      currency: PropTypes.objectOf(PropTypes.string),
+      amount: PropTypes.number
+    })
+  ).isRequired
+};

@@ -1,6 +1,8 @@
 import React from 'react';
-import styled, { ThemeProvider } from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
+import { CATEGORIES } from './Queries';
+import { client } from '../../apollo/apollo';
 
 const theme = { primary: '#5ece7b' };
 
@@ -36,14 +38,31 @@ const NavItem = styled(NavLink)`
 `;
 
 export class Navigation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { categories: [] };
+  }
+
+  // jacket-canada-goosee
+
+  componentDidMount() {
+    client.query({ query: CATEGORIES }).then((result) => {
+      console.log(result.data);
+      this.setState({ categories: result.data.categories });
+    });
+  }
+
   render() {
+    const { categories } = this.state;
     return (
       <ThemeProvider theme={theme}>
         <NavigationWrapper className="header-navigation">
           <NavList>
-            <NavItem to="/">ALL</NavItem>
-            <NavItem to="/tech">TECH</NavItem>
-            <NavItem to="/clothes">CLOTHES</NavItem>
+            {categories.map((category) => (
+              <NavItem key={category.name} to={`/${category.name}`}>
+                {category.name.toUpperCase()}
+              </NavItem>
+            ))}
           </NavList>
         </NavigationWrapper>
       </ThemeProvider>

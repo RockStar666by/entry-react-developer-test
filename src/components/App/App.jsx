@@ -8,8 +8,7 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
   margin: 0 auto;
 `;
 export class App extends React.Component {

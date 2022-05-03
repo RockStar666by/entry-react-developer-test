@@ -1,17 +1,34 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { CATEGORIES } from '../components/Navigation/Queries';
+import { client } from '../apollo/apollo';
 import { CategoryPage } from '../pages/CategoryPage';
-import { ProductPage } from '../pages/ProductPage';
+import { ProductPageWithRouter } from '../pages/ProductPage';
 import { CartPage } from '../pages/CartPage';
 
 export class AppRouting extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { categories: [] };
+  }
+
+  componentDidMount() {
+    client.query({ query: CATEGORIES }).then((result) => {
+      console.log(result.data);
+      this.setState({ categories: result.data.categories });
+    });
+  }
+
   render() {
+    const { categories } = this.state;
     return (
       <Routes>
         <Route path="/" element={<CategoryPage />} />
-        <Route path="/tech" element={<CategoryPage product="Tech" />} />
-        <Route path="/clothes" element={<CategoryPage product="Clothes" />} />
-        <Route path="/product/:productId" element={<ProductPage />} />
+        {/* eslint-disable-next-line */}
+        {categories.map((category) => {
+          return <Route key={category.name} path={`/${category.name}`} element={<CategoryPage category={`${category.name}`} />} />;
+        })}
+        <Route path="/product/:productId" element={<ProductPageWithRouter />} />
         <Route path="/cart" element={<CartPage />} />
       </Routes>
     );
