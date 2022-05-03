@@ -1,6 +1,8 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import ArrowImage from '../../assets/dropdown-arrow.svg';
+import { CURRENCIES } from './Queries';
+import { client } from '../../apollo/apollo';
 
 const theme = { primary: '#5ece7b' };
 
@@ -15,9 +17,10 @@ const DropDownContainer = styled.div`
 
 const DropDownHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  margin-right: 10px;
+  justify-content: flex-end;
   align-items: center;
-  width: 30px;
+  min-width: 30px;
   height: 40px;
   background: #ffffff;
   &:hover {
@@ -51,17 +54,26 @@ const ListItem = styled.li`
 `;
 
 const Arrow = styled.img`
+  margin-left: 10px;
+  transition: transform 0.5s;
   transform: ${(props) => (props.rotate ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;
 
 Arrow.defaultProps = { src: ArrowImage };
 
-const options = ['$ USD', '€ EUR', '¥ JPY'];
-
 export class CurrencySwitcher extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentOption: '$ USD', isOpen: false };
+    this.state = {
+      currencies: [
+        {
+          label: '',
+          symbol: ''
+        }
+      ],
+      currentIndex: 0,
+      isOpen: false
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleToggling = this.handleToggling.bind(this);
@@ -72,6 +84,10 @@ export class CurrencySwitcher extends React.Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
+    client.query({ query: CURRENCIES }).then((result) => {
+      console.log('MOUNT', result.data);
+      this.setState({ currencies: result.data.currencies, loading: result.loading });
+    });
   }
 
   componentWillUnmount() {
@@ -95,28 +111,32 @@ export class CurrencySwitcher extends React.Component {
 
   onOptionClicked(value) {
     return () => {
-      this.setState({ currentOption: value });
+      this.setState({ currentIndex: value });
       this.setState({ isOpen: false });
       console.log(value);
     };
   }
 
   render() {
+    const { currencies, currentIndex, isOpen } = this.state;
     return (
       <ThemeProvider theme={theme}>
         <DropDownContainer ref={this.wrapperRef}>
           <DropDownHeader onClick={this.handleToggling}>
-            <span>{this.state.currentOption.substring(0, 1)}</span>
-            {this.state.isOpen ? <Arrow /> : <Arrow rotate="true" />}
+            <span>{currencies[currentIndex].symbol}</span>
+            {isOpen ? <Arrow /> : <Arrow rotate="true" />}
           </DropDownHeader>
-          {this.state.isOpen && (
+          {isOpen && (
             <DropDownListContainer>
               <DropDownList>
-                {options.map((option) => (
-                  <ListItem onClick={this.onOptionClicked(option)} key={Math.random()}>
-                    {option}
-                  </ListItem>
-                ))}
+                {/* eslint-disable-next-line */}
+                {currencies.map((currency, index) => {
+                  return (
+                    <ListItem onClick={this.onOptionClicked(index)} key={currency.label}>
+                      {`${currency.symbol} ${currency.label}`}
+                    </ListItem>
+                  );
+                })}
               </DropDownList>
             </DropDownListContainer>
           )}

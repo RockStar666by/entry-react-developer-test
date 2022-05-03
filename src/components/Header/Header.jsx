@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Navigation } from '../Navigation/Navigation';
 import LogoImage from '../../assets/a-logo.svg';
-import { CurrencySwitcher } from '../Actions/CurrencySwitcher';
+import { CurrencySwitcher } from '../../feature/Switcher/CurrencySwitcher';
 import { Cart } from '../Actions/Cart';
 
 const HeaderWrapper = styled.header`
