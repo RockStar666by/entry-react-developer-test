@@ -16,6 +16,7 @@ const CategoryPageContainer = styled.div`
 `;
 
 const CategoryPageTitle = styled.h2`
+  margin: 0;
   position: relative;
   margin-bottom: 100px;
   height: 70px;

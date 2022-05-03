@@ -49,6 +49,7 @@ const ProductPageContainer = styled.div`
   align-items: flex-start;
   box-sizing: border-box;
   padding: 80px 100px 0;
+  margin-bottom: 100px;
 `;
 
 const ProductInfoContainer = styled.article`
@@ -57,6 +58,7 @@ const ProductInfoContainer = styled.article`
 `;
 
 const ProductInfoHeader = styled.h2`
+  margin: 0;
   font-weight: 600;
   font-size: 30px;
   line-height: 27px;
@@ -64,6 +66,7 @@ const ProductInfoHeader = styled.h2`
 `;
 
 const ProductInfoType = styled.p`
+  margin: 0;
   font-weight: 400;
   font-size: 30px;
   line-height: 27px;
@@ -75,6 +78,7 @@ const PriceContainer = styled.div`
 `;
 
 const PriceHeader = styled.p`
+  margin: 0;
   font-family: Roboto Condensed;
   font-weight: 700;
   font-size: 18px;
@@ -82,6 +86,7 @@ const PriceHeader = styled.p`
 `;
 
 const PriceTag = styled.p`
+  margin: 0;
   height: 46px;
   font-weight: 700;
   font-size: 24px;
@@ -94,25 +99,31 @@ const Description = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-
-  h1 {
-    display: block;
-    font-size: 2em;
-    margin-top: 0.67em;
-    margin-bottom: 0.67em;
-    margin-left: 0;
-    margin-right: 0;
-    font-weight: bold;
+  max-height: 400px;
+  overflow: hidden;
+  ul {
+    margin: 0;
+    padding-left: 20px;
   }
-
-  h3 {
-    display: block;
-    font-size: 1.17em;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-weight: bold;
+  &:hover {
+    overflow-y: overlay;
+  }
+  > *:not(:last-child) {
+    margin-bottom: 20px;
+  }
+  &::-webkit-scrollbar {
+    background-color: transparent;
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #babac0;
+    border-radius: 6px;
+  }
+  &::-webkit-scrollbar-button {
+    display: none;
   }
 `;
 

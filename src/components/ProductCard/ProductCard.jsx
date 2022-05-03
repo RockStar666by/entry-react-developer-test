@@ -38,7 +38,7 @@ const ProductImage = styled.div`
   height: 330px;
   width: 354px;
   background: url(${(props) => props.bgImage}) center no-repeat;
-  background-size: contain;
+  background-size: auto 100%;
   border: none;
 `;
 
@@ -50,10 +50,12 @@ const ProductDescription = styled.div`
 
 const ProductHeader = styled.h4`
   font-weight: 300;
+  margin: 0;
 `;
 
 const ProductPrice = styled.p`
   font-weight: 500;
+  margin: 0;
 `;
 
 const ProductBadge = styled.div`
@@ -71,6 +73,7 @@ const ProductBadge = styled.div`
 `;
 
 const CartButton = styled.button`
+  cursor: pointer;
   position: absolute;
   width: 52px;
   height: 52px;

@@ -2,7 +2,6 @@ import React from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
-import { Reset } from 'styled-reset';
 import { createGlobalStyle } from 'styled-components';
 import { client } from './apollo/apollo';
 import { App } from './components/App/App';
@@ -23,7 +22,6 @@ const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <Reset />
     <GlobalStyle />
     <ApolloProvider client={client}>
       <BrowserRouter>

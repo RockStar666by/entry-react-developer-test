@@ -9,6 +9,7 @@ const ParamListContainer = styled.div`
 `;
 
 const ParamHeader = styled.p`
+  margin: 0;
   height: 18px;
   font-family: Roboto Condensed;
   font-weight: 700;
@@ -17,6 +18,8 @@ const ParamHeader = styled.p`
 `;
 
 const ParamList = styled.ul`
+  list-style-type: none;
+  padding: 0;
   margin-top: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -72,6 +75,7 @@ const BigColorListItem = css`
 
 const ColorItem = styled.li`
   cursor: pointer;
+  filter: drop-shadow(0px 4px 11px rgba(29, 31, 34, 0.2));
   background: ${(props) => props.value};
   ${(props) => (props.mini ? `${SmallColorListItem}` : `${BigColorListItem}`)};
   outline: ${(props) => props.active && `2px solid ${props.theme.primary}`};

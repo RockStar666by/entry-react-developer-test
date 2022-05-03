@@ -14,6 +14,7 @@ const NavigationWrapper = styled.nav`
 `;
 
 const NavList = styled.ul`
+  padding: 0;
   position: relative;
   height: 100%;
   display: flex;
