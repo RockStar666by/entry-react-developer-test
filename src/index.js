@@ -1,4 +1,5 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
@@ -6,6 +7,15 @@ import { createGlobalStyle } from 'styled-components';
 import { client } from './apollo/apollo';
 import { App } from './components/App/App';
 import reportWebVitals from './reportWebVitals';
+
+import { saveState, debounce } from './redux/localStorage';
+import { store } from './redux/store';
+
+store.subscribe(
+  debounce(() => {
+    saveState(store.getState());
+  }, 800)
+);
 
 const GlobalStyle = createGlobalStyle`
 body {
@@ -24,9 +34,11 @@ root.render(
   <React.StrictMode>
     <GlobalStyle />
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
     </ApolloProvider>
   </React.StrictMode>
 );

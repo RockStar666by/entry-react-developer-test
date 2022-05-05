@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled, { ThemeProvider } from 'styled-components';
 
 const theme = { primary: '#5ece7b' };
@@ -59,6 +60,14 @@ export class Counter extends React.Component {
     this.onPlusClick = this.onPlusClick.bind(this);
   }
 
+  componentDidMount() {
+    this.props.addParentState(this.state.counter);
+  }
+
+  componentDidUpdate() {
+    this.props.addParentState(this.state.counter);
+  }
+
   onMinusClick() {
     if (this.state.counter > 1) this.setState((prevState) => ({ counter: prevState.counter - 1 }));
   }
@@ -82,3 +91,5 @@ export class Counter extends React.Component {
     );
   }
 }
+
+Counter.propTypes = { addParentState: PropTypes.func.isRequired };

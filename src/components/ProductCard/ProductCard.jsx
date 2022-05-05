@@ -1,7 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import styled, { ThemeProvider, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { addToCart } from '../../redux/actions';
 import CartIcon from '../../assets/cart-icon-white.svg';
 import { Counter } from '../../feature/Counter/Counter';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
@@ -118,14 +121,16 @@ const CartInfoContainer = styled.div`
   animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s 1 ${slideInFromBottom};
 `;
 
-export class ProductCard extends React.PureComponent {
+export class ProductCardNoRedux extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = { isCartClicked: false };
+    this.state = { isCartClicked: false, options: {}, quantity: '' };
 
     this.cartRef = React.createRef();
     this.handleClickOutside = this.handleClickOutside.bind(this);
     this.handleCartClicked = this.handleCartClicked.bind(this);
+    this.addSwitcherState = this.addSwitcherState.bind(this);
+    this.addQuantityState = this.addQuantityState.bind(this);
   }
 
   componentDidMount() {
@@ -148,10 +153,21 @@ export class ProductCard extends React.PureComponent {
     console.log('Cart clicked!');
   }
 
+  addSwitcherState(attribute) {
+    console.log(attribute);
+    this.setState(({ options }) => ({ options: { ...options, ...attribute } }));
+  }
+
+  addQuantityState(number) {
+    console.log(number);
+    this.setState({ quantity: number });
+  }
+
   render() {
-    const { isCartClicked } = this.state;
-    const { id, brand, name, gallery, attributes, prices } = this.props;
-    console.log(id);
+    const { isCartClicked, options, quantity } = this.state;
+    // eslint-disable-next-line
+    const { id, brand, name, gallery, attributes, prices, addedProducts } = this.props;
+    console.log(id, addedProducts, this.state);
     return (
       <ThemeProvider theme={theme}>
         <ProductCardContainer isCartClicked={isCartClicked} ref={this.cartRef}>
@@ -164,13 +180,16 @@ export class ProductCard extends React.PureComponent {
                     <ParamSwitcher
                       key={attribute.id}
                       mini
-                      header={`${attribute.name.toUpperCase()}:`}
+                      header={attribute.name}
                       options={attribute.items}
                       attrType={attribute.type}
+                      addParentState={this.addSwitcherState}
                     />
                   ))}
-                <Counter />
-                <CustomButton wide>ADD TO CART</CustomButton>
+                <Counter addParentState={this.addQuantityState} />
+                <CustomButton wide actionOnClick={() => this.props.addToCart({ id, name, brand, options, quantity })}>
+                  ADD TO CART
+                </CustomButton>
               </CartInfoContainer>
             </CartOverlay>
           )}
@@ -190,10 +209,20 @@ export class ProductCard extends React.PureComponent {
   }
 }
 
-ProductCard.propTypes = {
+function mapState(state) {
+  const { products } = state;
+  return { addedProducts: products };
+}
+
+const actionCreators = { addToCart };
+
+export const ProductCard = connect(mapState, actionCreators)(ProductCardNoRedux);
+
+ProductCardNoRedux.propTypes = {
   id: PropTypes.string.isRequired,
   brand: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  addToCart: PropTypes.func.isRequired,
   gallery: PropTypes.arrayOf(PropTypes.string).isRequired,
   attributes: PropTypes.arrayOf(
     PropTypes.shape({

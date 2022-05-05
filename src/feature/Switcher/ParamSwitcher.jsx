@@ -94,6 +94,10 @@ export class ParamSwitcher extends React.Component {
     this.onOptionClicked = this.onOptionClicked.bind(this);
   }
 
+  componentDidMount() {
+    this.props.addParentState({ [this.props.header.toLowerCase()]: this.state.currentOption });
+  }
+
   handleChange(event) {
     console.log(this.state);
     this.setState({ currentOption: event.target.value });
@@ -101,6 +105,7 @@ export class ParamSwitcher extends React.Component {
 
   onOptionClicked(value) {
     return () => {
+      this.props.addParentState({ [this.props.header.toLowerCase()]: value });
       this.setState({ currentOption: value });
       console.log(value);
     };
@@ -111,7 +116,7 @@ export class ParamSwitcher extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <ParamListContainer>
-          <ParamHeader>{header}</ParamHeader>
+          <ParamHeader>{`${header.toUpperCase()}:`}</ParamHeader>
           <ParamList mini={mini}>
             {options.map(
               // eslint-disable-next-line
@@ -120,7 +125,7 @@ export class ParamSwitcher extends React.Component {
                   <ListItem
                     mini={mini}
                     value={option.value}
-                    onClick={this.onOptionClicked(option)}
+                    onClick={this.onOptionClicked(option, header)}
                     active={this.state.currentOption.id === option.id}
                     key={option.id}
                   />
@@ -146,7 +151,8 @@ ParamSwitcher.propTypes = {
   mini: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   attrType: PropTypes.string.isRequired,
-  header: PropTypes.string.isRequired
+  header: PropTypes.string.isRequired,
+  addParentState: PropTypes.func.isRequired
 };
 
 ParamSwitcher.defaultProps = { mini: false };
