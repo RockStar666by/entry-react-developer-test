@@ -52,7 +52,7 @@ const ChangeCountButton = styled.button`
   }
 `;
 
-export class Counter extends React.Component {
+export class Counter extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = { counter: 1 };

@@ -4,9 +4,7 @@ import styled, { css, ThemeProvider } from 'styled-components';
 
 const theme = { primary: '#5ece7b' };
 
-const ParamListContainer = styled.div`
-  margin-bottom: 16px;
-`;
+const ParamListContainer = styled.div``;
 
 const ParamHeader = styled.p`
   margin: 0;
@@ -96,6 +94,10 @@ export class ParamSwitcher extends React.Component {
 
   componentDidMount() {
     this.props.addParentState({ [this.props.header.toLowerCase()]: this.state.currentOption });
+    if (Object.keys(this.props.selectedOption).length !== 0) {
+      this.setState({ currentOption: this.props.selectedOption });
+    }
+    console.log('OPTIONS', this.props.options[0], this.props.selectedOption);
   }
 
   handleChange(event) {
@@ -152,7 +154,8 @@ ParamSwitcher.propTypes = {
   options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   attrType: PropTypes.string.isRequired,
   header: PropTypes.string.isRequired,
-  addParentState: PropTypes.func.isRequired
+  addParentState: PropTypes.func,
+  selectedOption: PropTypes.objectOf(PropTypes.string)
 };
 
-ParamSwitcher.defaultProps = { mini: false };
+ParamSwitcher.defaultProps = { mini: false, addParentState: () => {}, selectedOption: {} };

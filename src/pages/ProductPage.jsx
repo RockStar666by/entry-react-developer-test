@@ -1,9 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { gql } from '@apollo/client';
 import { Markup } from 'interweave';
+import { addToCart } from '../redux/actions';
 import { CustomButton } from '../feature/CustomButton/CustomButton';
 import { Gallery } from '../feature/Gallery/Gallery';
 import { ParamSwitcher } from '../feature/Switcher/ParamSwitcher';
@@ -18,17 +20,21 @@ const PRODUCT_PAGE = gql`
       gallery
       description
       category
+      __typename @skip(if: true)
       attributes {
         id
         name
         type
+        __typename @skip(if: true)
         items {
           displayValue
           value
           id
+          __typename @skip(if: true)
         }
       }
       prices {
+        __typename @skip(if: true)
         currency {
           label
           symbol
@@ -93,6 +99,12 @@ const PriceTag = styled.p`
   line-height: 46px;
 `;
 
+const ParamSwitchersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const Description = styled.div`
   margin-top: 40px;
   font-family: Roboto;
@@ -133,10 +145,25 @@ const withRouter = (WrappedComponent) => () => {
   return <WrappedComponent match={match} />;
 };
 
-export class ProductPage extends React.Component {
+export class ProductPageTemplate extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state = { productData: {}, loading: true };
+    this.state = {
+      productData: {
+        prices: [
+          {
+            currency: {
+              label: '',
+              symbol: ''
+            },
+            amount: ''
+          }
+        ]
+      },
+      loading: true,
+      options: {}
+    };
+    this.addSwitcherState = this.addSwitcherState.bind(this);
   }
 
   // jacket-canada-goosee
@@ -148,38 +175,46 @@ export class ProductPage extends React.Component {
     });
   }
 
+  addSwitcherState(attribute) {
+    console.log(attribute);
+    this.setState(({ options }) => ({ options: { ...options, ...attribute } }));
+  }
+
   render() {
-    const { loading } = this.state;
-    const { brand, name, description, inStock, gallery, prices, attributes } = this.state.productData;
+    const { currency } = this.props;
+    const { loading, options } = this.state;
+    const { id, brand, name, description, inStock, gallery, prices, attributes } = this.state.productData;
+    console.log(attributes);
     return loading ? (
-      <p>LOADING...</p>
+      <h2>LOADING...</h2>
     ) : (
       <ProductPageContainer>
         <Gallery gallery={gallery} />
         <ProductInfoContainer>
           <ProductInfoHeader>{brand}</ProductInfoHeader>
           <ProductInfoType>{name}</ProductInfoType>
-
           {inStock ? (
             <>
-              {[...attributes]
-                .sort((b, a) => a.type.localeCompare(b.type))
-                .map((attribute) => (
-                  <ParamSwitcher
-                    key={attribute.id}
-                    header={`${attribute.name.toUpperCase()}:`}
-                    options={attribute.items}
-                    attrType={attribute.type}
-                  />
-                ))}
+              <ParamSwitchersContainer>
+                {[...attributes]
+                  .sort((b, a) => a.type.localeCompare(b.type))
+                  .map((attribute) => (
+                    <ParamSwitcher
+                      key={attribute.id}
+                      header={attribute.name.toUpperCase()}
+                      options={attribute.items}
+                      attrType={attribute.type}
+                      addParentState={this.addSwitcherState}
+                    />
+                  ))}
+              </ParamSwitchersContainer>
               <PriceContainer>
                 <PriceHeader>PRICE:</PriceHeader>
-                <PriceTag>
-                  {prices[0].currency.symbol}
-                  {prices[0].amount}
-                </PriceTag>
+                <PriceTag>{`${prices[currency.index].currency.symbol} ${prices[currency.index].amount}`}</PriceTag>
               </PriceContainer>
-              <CustomButton>ADD TO CART</CustomButton>
+              <CustomButton actionOnClick={() => this.props.addToCart({ id, name, brand, options, quantity: 1, prices })}>
+                ADD TO CART
+              </CustomButton>
             </>
           ) : (
             <>
@@ -199,6 +234,23 @@ export class ProductPage extends React.Component {
   }
 }
 
+function mapState(state) {
+  const { currency } = state;
+  return { currency };
+}
+
+const actionCreators = { addToCart };
+
+export const ProductPage = connect(mapState, actionCreators)(ProductPageTemplate);
+
 export const ProductPageWithRouter = withRouter(ProductPage);
 
-ProductPage.propTypes = { match: PropTypes.shape({ params: PropTypes.shape({ productId: PropTypes.string }) }).isRequired };
+ProductPageTemplate.propTypes = {
+  match: PropTypes.shape({ params: PropTypes.shape({ productId: PropTypes.string }) }).isRequired,
+  addToCart: PropTypes.func.isRequired,
+  currency: PropTypes.shape({
+    index: PropTypes.number,
+    label: PropTypes.string,
+    symbol: PropTypes.string
+  }).isRequired
+};

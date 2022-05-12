@@ -59,15 +59,28 @@ export class CategoryPage extends React.Component {
     const { categoryProducts, loading } = this.state;
     const { category, title } = this.props;
     console.log(categoryProducts, loading);
-    return (
+    return loading ? (
+      <h2>LOADING...</h2>
+    ) : (
       <CategoryPageContainer>
         <CategoryPageTitle>{category === 'all' ? title : category.charAt(0).toUpperCase() + category.slice(1)}</CategoryPageTitle>
         <ProductsContainer>
           {/* eslint-disable-next-line */}
           {categoryProducts.map((product) => {
-            const { id, brand, name, attributes, prices, gallery } = product;
+            const { id, brand, name, attributes, prices, gallery, inStock } = product;
             console.log('ATTRIBUTES', name, attributes);
-            return <ProductCard key={id} id={id} brand={brand} name={name} gallery={gallery} attributes={attributes} prices={prices} />;
+            return (
+              <ProductCard
+                key={id}
+                id={id}
+                brand={brand}
+                name={name}
+                gallery={gallery}
+                attributes={attributes}
+                prices={prices}
+                inStock={inStock}
+              />
+            );
           })}
         </ProductsContainer>
       </CategoryPageContainer>
