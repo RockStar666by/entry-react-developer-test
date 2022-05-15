@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import styled, { ThemeProvider, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -121,7 +120,15 @@ const CartInfoContainer = styled.div`
   animation: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0s 1 ${slideInFromBottom};
 `;
 
-export class ProductCardNoRedux extends React.PureComponent {
+const CartHeader = styled.h2`
+  margin: 0;
+  height: 46px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 46px;
+`;
+
+export class ProductCardTemplate extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = { isCartClicked: false, options: {}, quantity: '' };
@@ -166,31 +173,40 @@ export class ProductCardNoRedux extends React.PureComponent {
   render() {
     const { isCartClicked, options, quantity } = this.state;
     // eslint-disable-next-line
-    const { id, brand, name, gallery, attributes, prices, addedProducts } = this.props;
-    console.log(id, addedProducts, this.state);
+    const { id, brand, name, gallery, attributes, prices, addedProducts, inStock, currency } = this.props;
+    console.log(id, addedProducts, this.state, currency);
     return (
       <ThemeProvider theme={theme}>
         <ProductCardContainer isCartClicked={isCartClicked} ref={this.cartRef}>
           {isCartClicked && (
             <CartOverlay>
-              <CartInfoContainer>
-                {[...attributes]
-                  .sort((b, a) => a.type.localeCompare(b.type))
-                  .map((attribute) => (
-                    <ParamSwitcher
-                      key={attribute.id}
-                      mini
-                      header={attribute.name}
-                      options={attribute.items}
-                      attrType={attribute.type}
-                      addParentState={this.addSwitcherState}
-                    />
-                  ))}
-                <Counter addParentState={this.addQuantityState} />
-                <CustomButton wide actionOnClick={() => this.props.addToCart({ id, name, brand, options, quantity })}>
-                  ADD TO CART
-                </CustomButton>
-              </CartInfoContainer>
+              {inStock ? (
+                <CartInfoContainer>
+                  {[...attributes]
+                    .sort((b, a) => a.type.localeCompare(b.type))
+                    .map((attribute) => (
+                      <ParamSwitcher
+                        key={attribute.id}
+                        mini
+                        header={attribute.name}
+                        options={attribute.items}
+                        attrType={attribute.type}
+                        addParentState={this.addSwitcherState}
+                      />
+                    ))}
+                  <Counter addParentState={this.addQuantityState} />
+                  <CustomButton wide actionOnClick={() => this.props.addToCart({ id, name, brand, options, quantity, prices })}>
+                    ADD TO CART
+                  </CustomButton>
+                </CartInfoContainer>
+              ) : (
+                <CartInfoContainer>
+                  <CartHeader>OUT OF STOCK</CartHeader>
+                  <CustomButton wide>
+                    ADD TO WISHLIST
+                  </CustomButton>
+                </CartInfoContainer>
+              )}
             </CartOverlay>
           )}
           <ProductCardBox to={`/product/${id}`}>
@@ -199,7 +215,7 @@ export class ProductCardNoRedux extends React.PureComponent {
             </ProductImage>
             <ProductDescription>
               <ProductHeader>{`${brand} ${name}`}</ProductHeader>
-              <ProductPrice>{`$${prices[0].amount}`}</ProductPrice>
+              <ProductPrice>{`${prices[currency.index].currency.symbol} ${prices[currency.index].amount}`}</ProductPrice>
             </ProductDescription>
           </ProductCardBox>
           <CartButton className="cart-button" onClick={this.handleCartClicked} />
@@ -210,18 +226,23 @@ export class ProductCardNoRedux extends React.PureComponent {
 }
 
 function mapState(state) {
-  const { products } = state;
-  return { addedProducts: products };
+  const { products, currency } = state;
+  return { addedProducts: products, currency };
 }
 
 const actionCreators = { addToCart };
 
-export const ProductCard = connect(mapState, actionCreators)(ProductCardNoRedux);
+export const ProductCard = connect(mapState, actionCreators)(ProductCardTemplate);
 
-ProductCardNoRedux.propTypes = {
+ProductCardTemplate.propTypes = {
   id: PropTypes.string.isRequired,
   brand: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  currency: PropTypes.shape({
+    index: PropTypes.number,
+    label: PropTypes.string,
+    symbol: PropTypes.string
+  }).isRequired,
   addToCart: PropTypes.func.isRequired,
   gallery: PropTypes.arrayOf(PropTypes.string).isRequired,
   attributes: PropTypes.arrayOf(

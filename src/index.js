@@ -18,6 +18,10 @@ store.subscribe(
 );
 
 const GlobalStyle = createGlobalStyle`
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   margin: 0;
   font-family: 'Raleway', 'Roboto Condensed', 'Source Sans Pro', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',

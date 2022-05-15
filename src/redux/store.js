@@ -3,13 +3,13 @@ import { combineReducers } from 'redux';
 import logger from 'redux-logger';
 // import { cartReducer } from './reducers/cart';
 import { productsReducer } from './reducers/products';
-// import { currencyReducer } from './reducers/currency';
+import { currencyReducer } from './reducers/currency';
 import { loadState } from './localStorage';
 
 const rootReducer = combineReducers({
   // cart: cartReducer,
-  products: productsReducer
-  // currency: currencyReducer
+  products: productsReducer,
+  currency: currencyReducer
 });
 
 export const store = configureStore({

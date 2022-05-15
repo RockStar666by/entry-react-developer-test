@@ -1,8 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import styled, { ThemeProvider } from 'styled-components';
+import PropTypes from 'prop-types';
+import { setCurrency } from '../../redux/actions';
 import ArrowImage from '../../assets/dropdown-arrow.svg';
 import { CURRENCIES } from './Queries';
 import { client } from '../../apollo/apollo';
+import CheckedIcon from '../../assets/check-mark.svg';
 
 const theme = { primary: '#5ece7b' };
 
@@ -27,6 +31,14 @@ const DropDownHeader = styled.div`
     color: ${(props) => props.theme.primary};
   }
 `;
+
+const Checked = styled.img`
+  margin-left: 10px;
+  width: 15px;
+  height: 15px;
+`;
+
+Checked.defaultProps = { src: CheckedIcon };
 
 const DropDownListContainer = styled.div``;
 
@@ -61,17 +73,11 @@ const Arrow = styled.img`
 
 Arrow.defaultProps = { src: ArrowImage };
 
-export class CurrencySwitcher extends React.Component {
+export class CurrencySwitcherTemplate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currencies: [
-        {
-          label: '',
-          symbol: ''
-        }
-      ],
-      currentIndex: 0,
+      currencies: [],
       isOpen: false
     };
 
@@ -86,7 +92,7 @@ export class CurrencySwitcher extends React.Component {
     document.addEventListener('mousedown', this.handleClickOutside);
     client.query({ query: CURRENCIES }).then((result) => {
       console.log('MOUNT', result.data);
-      this.setState({ currencies: result.data.currencies, loading: result.loading });
+      this.setState({ currencies: result.data.currencies });
     });
   }
 
@@ -111,19 +117,21 @@ export class CurrencySwitcher extends React.Component {
 
   onOptionClicked(value) {
     return () => {
-      this.setState({ currentIndex: value });
       this.setState({ isOpen: false });
+      this.props.setCurrency(value);
       console.log(value);
     };
   }
 
   render() {
-    const { currencies, currentIndex, isOpen } = this.state;
+    const { currencies, isOpen } = this.state;
+    const { currency } = this.props;
+    console.log(currencies, currency);
     return (
       <ThemeProvider theme={theme}>
         <DropDownContainer ref={this.wrapperRef}>
           <DropDownHeader onClick={this.handleToggling}>
-            <span>{currencies[currentIndex].symbol}</span>
+            {currencies.length > 0 && <span>{currencies[currency.index].symbol}</span>}
             {isOpen ? <Arrow /> : <Arrow rotate="true" />}
           </DropDownHeader>
           {isOpen && (
@@ -131,9 +139,11 @@ export class CurrencySwitcher extends React.Component {
               <DropDownList>
                 {/* eslint-disable-next-line */}
                 {currencies.map((currency, index) => {
+                  console.log(index, currency);
                   return (
-                    <ListItem onClick={this.onOptionClicked(index)} key={currency.label}>
+                    <ListItem onClick={this.onOptionClicked({ ...currency, index })} key={currency.label}>
                       {`${currency.symbol} ${currency.label}`}
+                      {index === this.props.currency.index && <Checked />}
                     </ListItem>
                   );
                 })}
@@ -145,3 +155,21 @@ export class CurrencySwitcher extends React.Component {
     );
   }
 }
+
+function mapState(state) {
+  const { currency } = state;
+  return { currency };
+}
+
+const actionCreators = { setCurrency };
+
+export const CurrencySwitcher = connect(mapState, actionCreators)(CurrencySwitcherTemplate);
+
+CurrencySwitcherTemplate.propTypes = {
+  setCurrency: PropTypes.func.isRequired,
+  currency: PropTypes.shape({
+    index: PropTypes.number,
+    label: PropTypes.string,
+    symbol: PropTypes.string
+  }).isRequired
+};
