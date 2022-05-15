@@ -6,13 +6,28 @@ const theme = { primary: '#5ece7b' };
 
 const ParamListContainer = styled.div``;
 
+const BigHeader = css`
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 18px;
+`;
+
+const SmallHeader = css`
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: capitalize;
+  margin: 8px 0;
+`;
+
 const ParamHeader = styled.p`
   margin: 0;
   height: 18px;
   font-family: Roboto Condensed;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 18px;
+  ${(props) => (props.miniCart ? `${SmallHeader}` : `${BigHeader}`)};
 `;
 
 const ParamList = styled.ul`
@@ -21,7 +36,7 @@ const ParamList = styled.ul`
   margin-top: 8px;
   display: flex;
   flex-wrap: wrap;
-  gap: ${(props) => (props.mini ? '8px' : '12px')}; ;
+  gap: ${(props) => (props.mini ? '8px' : '12px')};
 `;
 
 const SmallTextListItem = css`
@@ -114,12 +129,12 @@ export class ParamSwitcher extends React.Component {
   }
 
   render() {
-    const { mini, options, header, attrType } = this.props;
+    const { mini, options, header, attrType, miniCart } = this.props;
     return (
       <ThemeProvider theme={theme}>
         <ParamListContainer>
-          <ParamHeader>{`${header.toUpperCase()}:`}</ParamHeader>
-          <ParamList mini={mini}>
+          <ParamHeader miniCart={miniCart}>{`${header}:`}</ParamHeader>
+          <ParamList mini={mini} miniCart={miniCart}>
             {options.map(
               // eslint-disable-next-line
               (option) =>
@@ -151,6 +166,7 @@ export class ParamSwitcher extends React.Component {
 
 ParamSwitcher.propTypes = {
   mini: PropTypes.bool,
+  miniCart: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
   attrType: PropTypes.string.isRequired,
   header: PropTypes.string.isRequired,
@@ -158,4 +174,4 @@ ParamSwitcher.propTypes = {
   selectedOption: PropTypes.objectOf(PropTypes.string)
 };
 
-ParamSwitcher.defaultProps = { mini: false, addParentState: () => {}, selectedOption: {} };
+ParamSwitcher.defaultProps = { mini: false, miniCart: false, addParentState: () => {}, selectedOption: {} };

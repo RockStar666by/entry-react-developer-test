@@ -1,6 +1,6 @@
 import React from 'react';
-
-import styled, { ThemeProvider } from 'styled-components';
+import { Link } from 'react-router-dom';
+import styled, { ThemeProvider, css } from 'styled-components';
 import PropTypes from 'prop-types';
 import { gql } from '@apollo/client';
 import { connect } from 'react-redux';
@@ -9,7 +9,6 @@ import { Slider } from '../../feature/ImageSlider/Slider';
 import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
 import { client } from '../../apollo/apollo';
 import { CartCounter } from '../../feature/Counter/CartCounter';
-// import { Link } from 'react-router-dom';
 
 // import { Counter } from '../../feature/Counter/Counter';
 // import { CustomButton } from '../../feature/CustomButton/CustomButton';
@@ -24,17 +23,21 @@ const CART_ITEM = gql`
       gallery
       description
       category
+      __typename @skip(if: true)
       attributes {
         id
         name
         type
+        __typename @skip(if: true)
         items {
           displayValue
           value
           id
+          __typename @skip(if: true)
         }
       }
       prices {
+        __typename @skip(if: true)
         currency {
           label
           symbol
@@ -54,9 +57,28 @@ const CartItemContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 336px;
-  border-bottom: 1px solid #e5e5e5;
+
+  border-bottom: ${(props) => (props.mini ? 'none' : '1px solid #e5e5e5')};
   &:first-child {
-    border-top: 1px solid #e5e5e5;
+    border-top: ${(props) => (props.mini ? 'none' : '1px solid #e5e5e5')};
+  }
+  ${(props) =>
+    props.mini &&
+    `box-sizing: border-box;
+    border-left: 6px solid transparent;
+    padding: 0 16px 0 10px;
+    height: auto;
+    min-height: 190px;
+    &:hover {
+    border-left: 6px solid #5ece7b;
+  }`};
+`;
+
+const CustomLink = styled(Link)`
+  text-decoration: none;
+  color: black;
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -64,7 +86,6 @@ const SettingsLeft = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  pointer-events: none;
 `;
 
 const SettingsRight = styled.div`
@@ -72,36 +93,63 @@ const SettingsRight = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  padding: 24px 0;
+  padding: ${(props) => (props.mini ? '0' : '24px 0')};
 `;
 
-const CartItemHeader = styled.h2`
+const BigHeader = css`
   margin: 24px 0 0;
   font-weight: 600;
   font-size: 30px;
   line-height: 27px;
 `;
 
-const CartItemType = styled.p`
+const SmallHeader = css`
+  margin: 0;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 26px;
+`;
+
+const CartItemHeader = styled.h2`
+  ${(props) => (props.mini ? `${SmallHeader}` : `${BigHeader}`)};
+`;
+
+const BigType = css`
   margin: 16px 0 0;
   font-weight: 400;
   font-size: 30px;
   line-height: 27px;
 `;
 
+const CartItemType = styled.p`
+  ${(props) => (props.mini ? `${SmallHeader}` : `${BigType}`)};
+`;
+
 const ParamSwitcherContainer = styled.div`
   display: flex;
   flex-flow: column wrap;
-  height: 180px;
+  ${(props) => (props.mini ? 'height: auto;' : 'height: 180px;')};
   column-gap: 40px;
+  pointer-events: none;
 `;
 
-const PriceTag = styled.p`
+const BigPriceTag = css`
   margin: 20px 0 20px;
   height: 24px;
   font-weight: 700;
   font-size: 24px;
   line-height: 24px;
+`;
+
+const SmallPriceTag = css`
+  margin: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 34px;
+`;
+
+const PriceTag = styled.p`
+  ${(props) => (props.mini ? `${SmallPriceTag}` : `${BigPriceTag}`)};
 `;
 
 export class CartItemTemplate extends React.PureComponent {
@@ -132,7 +180,7 @@ export class CartItemTemplate extends React.PureComponent {
   }
 
   render() {
-    const { id, brand, name, options, prices, quantity, productId, currency } = this.props;
+    const { id, brand, name, options, prices, quantity, productId, currency, mini, miniCart } = this.props;
     const { loading, productData } = this.state;
     const { attributes, gallery } = this.state.productData;
     console.log(attributes, id, options, prices, productData);
@@ -140,16 +188,23 @@ export class CartItemTemplate extends React.PureComponent {
       <h2>LOADING...</h2>
     ) : (
       <ThemeProvider theme={theme}>
-        <CartItemContainer>
+        <CartItemContainer mini={mini}>
           <SettingsLeft>
-            <CartItemHeader>{brand}</CartItemHeader>
-            <CartItemType>{name}</CartItemType>
-            <PriceTag>{`${prices[currency.index].currency.symbol} ${prices[currency.index].amount}`}</PriceTag>
-            <ParamSwitcherContainer>
+            <CustomLink to={`/product/${id}`}>
+              <CartItemHeader mini={mini}>{brand}</CartItemHeader>
+              <CartItemType mini={mini}>{name}</CartItemType>
+            </CustomLink>
+            <PriceTag mini={mini}>
+              {prices[currency.index].currency.symbol}
+              {(prices[currency.index].amount * quantity).toFixed(2)}
+            </PriceTag>
+            <ParamSwitcherContainer mini={mini}>
               {[...attributes]
                 .sort((b, a) => a.type.localeCompare(b.type))
                 .map((attribute) => (
                   <ParamSwitcher
+                    mini={mini}
+                    miniCart={miniCart}
                     key={attribute.id}
                     header={attribute.name}
                     options={attribute.items}
@@ -160,9 +215,9 @@ export class CartItemTemplate extends React.PureComponent {
                 ))}
             </ParamSwitcherContainer>
           </SettingsLeft>
-          <SettingsRight>
-            <CartCounter small quantity={quantity} productId={productId} />
-            <Slider gallery={gallery} />
+          <SettingsRight mini={mini}>
+            <CartCounter mini={mini} quantity={quantity} productId={productId} />
+            <Slider mini={mini} gallery={gallery} />
           </SettingsRight>
         </CartItemContainer>
       </ThemeProvider>
@@ -180,6 +235,8 @@ const actionCreators = { addToCart };
 export const CartItem = connect(mapState, actionCreators)(CartItemTemplate);
 
 CartItemTemplate.propTypes = {
+  mini: PropTypes.bool,
+  miniCart: PropTypes.bool,
   currency: PropTypes.shape({
     index: PropTypes.number,
     label: PropTypes.string,
@@ -205,3 +262,5 @@ CartItemTemplate.propTypes = {
     })
   ).isRequired
 };
+
+CartItemTemplate.defaultProps = { mini: false, miniCart: false };

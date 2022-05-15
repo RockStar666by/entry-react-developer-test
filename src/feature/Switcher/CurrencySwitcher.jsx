@@ -6,6 +6,7 @@ import { setCurrency } from '../../redux/actions';
 import ArrowImage from '../../assets/dropdown-arrow.svg';
 import { CURRENCIES } from './Queries';
 import { client } from '../../apollo/apollo';
+import CheckedIcon from '../../assets/check-mark.svg';
 
 const theme = { primary: '#5ece7b' };
 
@@ -30,6 +31,14 @@ const DropDownHeader = styled.div`
     color: ${(props) => props.theme.primary};
   }
 `;
+
+const Checked = styled.img`
+  margin-left: 10px;
+  width: 15px;
+  height: 15px;
+`;
+
+Checked.defaultProps = { src: CheckedIcon };
 
 const DropDownListContainer = styled.div``;
 
@@ -130,9 +139,11 @@ export class CurrencySwitcherTemplate extends React.Component {
               <DropDownList>
                 {/* eslint-disable-next-line */}
                 {currencies.map((currency, index) => {
+                  console.log(index, currency);
                   return (
                     <ListItem onClick={this.onOptionClicked({ ...currency, index })} key={currency.label}>
                       {`${currency.symbol} ${currency.label}`}
+                      {index === this.props.currency.index && <Checked />}
                     </ListItem>
                   );
                 })}

@@ -1,15 +1,25 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 import sliderArrow from '../../assets/slider-arrow.svg';
+
+const BigContainer = css`
+  margin: 24px;
+  height: 100%;
+  width: 200px;
+`;
+
+const SmallContainer = css`
+  margin: 0 0 0 4px;
+  height: 100%;
+  width: 120px;
+`;
 
 const SliderContainer = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  margin: 24px;
-  height: 100%;
-  width: 200px;
+  ${(props) => (props.mini ? `${SmallContainer}` : `${BigContainer}`)};
   overflow: hidden;
 `;
 
@@ -83,11 +93,11 @@ export class Slider extends React.PureComponent {
   }
 
   render() {
-    const { gallery } = this.props;
+    const { gallery, mini } = this.props;
     const { currentImageIndex } = this.state;
     console.log(currentImageIndex);
     return (
-      <SliderContainer>
+      <SliderContainer mini={mini}>
         {/* eslint-disable-next-line */}
         {gallery.map((elem, index) => {
           console.log(index, currentImageIndex);
@@ -103,4 +113,5 @@ export class Slider extends React.PureComponent {
   }
 }
 
-Slider.propTypes = { gallery: PropTypes.arrayOf(PropTypes.string).isRequired };
+Slider.propTypes = { mini: PropTypes.bool, gallery: PropTypes.arrayOf(PropTypes.string).isRequired };
+Slider.defaultProps = { mini: false };

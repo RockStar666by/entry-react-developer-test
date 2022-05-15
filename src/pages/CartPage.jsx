@@ -11,11 +11,10 @@ const CartPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 80px;
   max-width: 1440px;
   box-sizing: border-box;
   padding: 80px 100px 0;
-  margin-bottom: 100px;
+  margin-bottom: 275px;
 `;
 
 const CartHeader = styled.h1`
@@ -106,9 +105,7 @@ export class CartPageTemplate extends React.Component {
                     prices={prices}
                     quantity={quantity}
                     productId={elem}
-                  >
-                    Hi
-                  </CartItem>
+                  />
                 );
               })}
             </CartItemsContainer>

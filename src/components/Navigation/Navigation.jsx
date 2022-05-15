@@ -44,8 +44,6 @@ export class Navigation extends React.Component {
     this.state = { categories: [] };
   }
 
-  // jacket-canada-goosee
-
   componentDidMount() {
     client.query({ query: CATEGORIES }).then((result) => {
       console.log(result.data);

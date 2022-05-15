@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, css } from 'styled-components';
 import { increaseCount, decreaseCount } from '../../redux/actions';
 
 const theme = { primary: '#5ece7b' };
@@ -11,32 +11,57 @@ const CounterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 45px;
+  width: ${(props) => (props.mini ? '24px' : '45px')};
   height: 100%;
 `;
 
-const Quantity = styled.div`
+const SmallQuantity = css`
+  width: 24px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 16px;
+`;
+
+const BigQuantity = css`
   width: 45px;
   height: 24px;
   line-height: 24px;
   font-size: 24px;
+`;
+
+const Quantity = styled.div`
+  ${(props) => (props.mini ? `${SmallQuantity}` : `${BigQuantity}`)};
   font-weight: 500;
   text-align: center;
+`;
+
+const BigButton = css`
+  width: 45px;
+  height: 45px;
+  line-height: 38px;
+  font-size: 38px;
+`;
+
+const SmallButton = css`
+  width: 24px;
+  height: 24px;
+  line-height: 20px;
+  font-size: 28px;
+  text-align: left;
+  &::first-letter {
+    margin-left: -3px;
+  }
 `;
 
 const ChangeCountButton = styled.button`
   padding: 0;
   background: none;
   cursor: pointer;
-  width: 45px;
-  height: 45px;
-  line-height: 38px;
-  font-size: 38px;
   font-weight: 100;
   text-align: center;
   box-sizing: border-box;
   border: 1px solid black;
-  ${(props) => props.small && ''}
+  ${(props) => (props.mini ? `${SmallButton}` : `${BigButton}`)}
   &:hover {
     color: white;
     background: ${(props) => props.theme.primary};
@@ -56,9 +81,7 @@ export class CartCounterTemplate extends React.PureComponent {
     this.onPlusClick = this.onPlusClick.bind(this);
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   onMinusClick() {
     if (this.state.counter > 1) {
@@ -75,14 +98,18 @@ export class CartCounterTemplate extends React.PureComponent {
   }
 
   render() {
-    const { small, productId } = this.props;
+    const { mini, productId } = this.props;
     console.log(productId);
     return (
       <ThemeProvider theme={theme}>
-        <CounterContainer>
-          <ChangeCountButton small={small} onClick={this.onPlusClick}>＋</ChangeCountButton>
-          <Quantity>{this.state.counter}</Quantity>
-          <ChangeCountButton small={small} onClick={this.onMinusClick}>－</ChangeCountButton>
+        <CounterContainer mini={mini}>
+          <ChangeCountButton mini={mini} onClick={this.onPlusClick}>
+            ＋
+          </ChangeCountButton>
+          <Quantity mini={mini}>{this.state.counter}</Quantity>
+          <ChangeCountButton mini={mini} onClick={this.onMinusClick}>
+            －
+          </ChangeCountButton>
         </CounterContainer>
       </ThemeProvider>
     );
@@ -94,10 +121,10 @@ const actionCreators = { increaseCount, decreaseCount };
 export const CartCounter = connect(null, actionCreators)(CartCounterTemplate);
 
 CartCounterTemplate.propTypes = {
-  small: PropTypes.bool,
+  mini: PropTypes.bool,
   quantity: PropTypes.number.isRequired,
   productId: PropTypes.string.isRequired,
   increaseCount: PropTypes.func.isRequired,
   decreaseCount: PropTypes.func.isRequired
 };
-CartCounterTemplate.defaultProps = { small: false };
+CartCounterTemplate.defaultProps = { mini: false };

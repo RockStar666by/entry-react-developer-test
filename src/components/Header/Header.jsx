@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Navigation } from '../Navigation/Navigation';
 import LogoImage from '../../assets/a-logo.svg';
 import { CurrencySwitcher } from '../../feature/Switcher/CurrencySwitcher';
-import { Cart } from '../Actions/Cart';
+import { CartButton } from '../CartModal/CartButton';
 
 const HeaderWrapper = styled.header`
   position: relative;
@@ -44,7 +44,7 @@ export class Header extends React.Component {
         <Logo />
         <Actions>
           <CurrencySwitcher />
-          <Cart />
+          <CartButton />
         </Actions>
       </HeaderWrapper>
     );

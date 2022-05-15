@@ -166,8 +166,6 @@ export class ProductPageTemplate extends React.PureComponent {
     this.addSwitcherState = this.addSwitcherState.bind(this);
   }
 
-  // jacket-canada-goosee
-
   componentDidMount() {
     client.query({ query: PRODUCT_PAGE, variables: { product: this.props.match.params.productId } }).then((result) => {
       console.log(result);
