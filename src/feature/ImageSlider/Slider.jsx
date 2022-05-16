@@ -11,14 +11,12 @@ export class Slider extends React.PureComponent {
   }
 
   handleClickLeftButton() {
-    console.log(this.state.currentImageIndex, this.props.gallery.length);
     if (this.state.currentImageIndex > 0) {
       this.setState((prevProps) => ({ currentImageIndex: prevProps.currentImageIndex - 1 }));
     }
   }
 
   handleClickRightButton() {
-    console.log(this.state.currentImageIndex, this.props.gallery.length);
     if (this.state.currentImageIndex < this.props.gallery.length - 1) {
       this.setState((prevProps) => ({ currentImageIndex: prevProps.currentImageIndex + 1 }));
     }
@@ -35,11 +33,9 @@ export class Slider extends React.PureComponent {
   render() {
     const { gallery, mini } = this.props;
     const { currentImageIndex } = this.state;
-    console.log(currentImageIndex);
     return (
       <Styles.SliderContainer mini={mini}>
         {gallery.map((elem, index) => {
-          console.log(index, currentImageIndex);
           return <Styles.SliderImage key={elem} src={elem} isActive={index === currentImageIndex} />;
         })}
 

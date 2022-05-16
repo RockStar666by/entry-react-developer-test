@@ -18,11 +18,9 @@ export class ParamSwitcher extends React.Component {
     if (Object.keys(this.props.selectedOption).length !== 0) {
       this.setState({ currentOption: this.props.selectedOption });
     }
-    console.log('OPTIONS', this.props.options[0], this.props.selectedOption);
   }
 
   handleChange(event) {
-    console.log(this.state);
     this.setState({ currentOption: event.target.value });
   }
 
@@ -30,7 +28,6 @@ export class ParamSwitcher extends React.Component {
     return () => {
       this.props.addParentState({ [this.props.header.toLowerCase()]: value });
       this.setState({ currentOption: value });
-      console.log(value);
     };
   }
 

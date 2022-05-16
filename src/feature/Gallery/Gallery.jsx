@@ -8,7 +8,6 @@ export class Gallery extends React.Component {
   constructor(props) {
     super(props);
     this.state = { currentPicture: null };
-    this.handleChange = this.handleChange.bind(this);
     this.onPictureClicked = this.onPictureClicked.bind(this);
   }
 
@@ -16,15 +15,9 @@ export class Gallery extends React.Component {
     this.setState({ currentPicture: this.props.gallery[0] });
   }
 
-  handleChange(event) {
-    console.log(this.state);
-    this.setState({ currentOption: event.target.value });
-  }
-
   onPictureClicked(value) {
     return () => {
       this.setState({ currentPicture: value });
-      console.log(value);
     };
   }
 

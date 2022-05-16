@@ -24,7 +24,6 @@ export class MiniCartTemplate extends React.PureComponent {
   }
 
   handleClickOutside(event) {
-    console.log(!this.props.cartToggleRef.current.contains(event.target));
     if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
       if (!this.props.cartToggleRef.current.contains(event.target)) {
         this.props.hideModal();
@@ -66,7 +65,6 @@ export class MiniCartTemplate extends React.PureComponent {
               </Styles.CartHeader>
               <Styles.CartItemContainer quantity={allIds.length}>
                 {allIds.map((elem) => {
-                  console.log(elem, byIds[elem]);
                   const { id, brand, name, options, prices, quantity } = byIds[elem];
                   return (
                     <CartItem

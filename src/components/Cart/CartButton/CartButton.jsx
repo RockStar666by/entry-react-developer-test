@@ -22,13 +22,11 @@ export class CartButtonTemplate extends React.PureComponent {
   }
 
   toggleModal = () => {
-    console.log(this.state.isOpen);
     if (this.state.isOpen) {
       this.hideModal();
     } else {
       this.showModal();
     }
-    console.log(this.state.isOpen);
   };
 
   showModal = () => {

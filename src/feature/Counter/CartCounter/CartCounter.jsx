@@ -15,8 +15,6 @@ export class CartCounterTemplate extends React.PureComponent {
     this.onPlusClick = this.onPlusClick.bind(this);
   }
 
-  componentDidMount() {}
-
   onMinusClick() {
     if (this.state.counter > 1) {
       this.setState((prevState) => ({ counter: prevState.counter - 1 }));
@@ -32,8 +30,7 @@ export class CartCounterTemplate extends React.PureComponent {
   }
 
   render() {
-    const { mini, productId } = this.props;
-    console.log(productId);
+    const { mini } = this.props;
     return (
       <ThemeProvider theme={theme}>
         <Styles.CounterContainer mini={mini}>

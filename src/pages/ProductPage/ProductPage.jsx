@@ -12,11 +12,6 @@ import { client } from '../../apollo/apollo';
 import { PRODUCT } from '../../queries/getProduct';
 import { currencyType } from '../../types';
 
-const withRouter = (WrappedComponent) => () => {
-  const match = { params: useParams() };
-  return <WrappedComponent match={match} />;
-};
-
 export class ProductPageTemplate extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -40,7 +35,6 @@ export class ProductPageTemplate extends React.PureComponent {
 
   componentDidMount() {
     client.query({ query: PRODUCT, variables: { product: this.props.match.params.productId } }).then((result) => {
-      console.log(result);
       this.setState({ productData: result.data.product, loading: result.data.loading });
     });
   }
@@ -49,14 +43,12 @@ export class ProductPageTemplate extends React.PureComponent {
     if (this.props.match !== prevProps.match) {
       this.setState({ loading: true });
       client.query({ query: PRODUCT, variables: { product: this.props.match.params.productId } }).then((result) => {
-        console.log(result);
         this.setState({ productData: result.data.product, loading: result.data.loading });
       });
     }
   }
 
   addSwitcherState(attribute) {
-    console.log(attribute);
     this.setState(({ options }) => ({ options: { ...options, ...attribute } }));
   }
 
@@ -64,7 +56,6 @@ export class ProductPageTemplate extends React.PureComponent {
     const { currency } = this.props;
     const { loading, options } = this.state;
     const { id, brand, name, description, inStock, gallery, prices, attributes } = this.state.productData;
-    console.log(attributes);
     return loading ? (
       <h2>LOADING...</h2>
     ) : (
@@ -112,6 +103,13 @@ export class ProductPageTemplate extends React.PureComponent {
       </Styles.ProductPageContainer>
     );
   }
+}
+
+function withRouter(WrappedComponent) {
+  return function () {
+    const match = { params: useParams() };
+    return <WrappedComponent match={match} />;
+  };
 }
 
 function mapState(state) {

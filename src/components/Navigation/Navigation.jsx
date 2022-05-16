@@ -13,7 +13,6 @@ export class Navigation extends React.Component {
 
   componentDidMount() {
     client.query({ query: CATEGORIES }).then((result) => {
-      console.log(result.data);
       this.setState({ categories: result.data.categories });
     });
   }

@@ -45,7 +45,6 @@ export class CartPageTemplate extends React.Component {
 
   render() {
     const { allIds, byIds } = this.props.cart;
-    console.log(allIds, byIds);
     return (
       <Styles.CartPageContainer>
         <Styles.CartHeader>CART</Styles.CartHeader>
@@ -55,7 +54,6 @@ export class CartPageTemplate extends React.Component {
           <>
             <Styles.CartItemsContainer>
               {allIds.map((elem) => {
-                console.log(elem, byIds[elem]);
                 const { id, brand, name, options, prices, quantity } = byIds[elem];
                 return (
                   <CartItem

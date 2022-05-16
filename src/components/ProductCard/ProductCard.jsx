@@ -33,7 +33,6 @@ export class ProductCardTemplate extends React.PureComponent {
   handleClickOutside(event) {
     if (this.cartRef && !this.cartRef.current.contains(event.target)) {
       this.setState({ isCartClicked: false });
-      console.log('outside clicked!');
     }
   }
 
@@ -43,19 +42,16 @@ export class ProductCardTemplate extends React.PureComponent {
   }
 
   addSwitcherState(attribute) {
-    console.log(attribute);
     this.setState(({ options }) => ({ options: { ...options, ...attribute } }));
   }
 
   addQuantityState(number) {
-    console.log(number);
     this.setState({ quantity: number });
   }
 
   render() {
     const { isCartClicked, options, quantity } = this.state;
     const { id, brand, name, gallery, attributes, prices, inStock, currency } = this.props;
-    console.log(id, this.state, currency);
     return (
       <ThemeProvider theme={theme}>
         <Styles.ProductCardContainer isCartClicked={isCartClicked} ref={this.cartRef}>

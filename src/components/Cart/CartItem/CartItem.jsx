@@ -35,16 +35,14 @@ export class CartItemTemplate extends React.PureComponent {
 
   componentDidMount() {
     client.query({ query: PRODUCT, variables: { product: this.props.id } }).then((result) => {
-      console.log(result);
       this.setState({ productData: result.data.product, loading: result.data.loading });
     });
   }
 
   render() {
     const { id, brand, name, options, prices, quantity, productId, currency, mini, miniCart, hideModal } = this.props;
-    const { loading, productData } = this.state;
+    const { loading } = this.state;
     const { attributes, gallery } = this.state.productData;
-    console.log(attributes, id, options, prices, productData);
     return loading ? (
       <h2>LOADING...</h2>
     ) : (

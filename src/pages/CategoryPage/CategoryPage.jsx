@@ -19,7 +19,6 @@ export class CategoryPage extends React.Component {
 
   componentDidMount() {
     client.query({ query: CATEGORY, variables: { category: `${this.props.category}` } }).then((result) => {
-      console.log('MOUNT', result.data);
       this.setState({ categoryProducts: result.data.category.products, loading: result.loading });
     });
     arrayForHoldingItems = [];
@@ -29,7 +28,6 @@ export class CategoryPage extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.category !== prevProps.category) {
       client.query({ query: CATEGORY, variables: { category: `${this.props.category}` } }).then((result) => {
-        console.log('UPDATE', result.data);
         this.setState({ categoryProducts: result.data.category.products, loading: result.loading, nextItems: 6 });
       });
       arrayForHoldingItems = [];
@@ -46,7 +44,6 @@ export class CategoryPage extends React.Component {
 
   loopWithSlice(start, end) {
     const slicedItems = this.state.categoryProducts.slice(start, end);
-    console.log(slicedItems);
     arrayForHoldingItems = [...arrayForHoldingItems, ...slicedItems];
     this.setState({ itemsToShow: arrayForHoldingItems });
   }
@@ -54,7 +51,6 @@ export class CategoryPage extends React.Component {
   render() {
     const { categoryProducts, loading, itemsToShow, nextItems } = this.state;
     const { category, title } = this.props;
-    console.log(categoryProducts, loading, itemsToShow, nextItems);
     return loading ? (
       <h2>LOADING...</h2>
     ) : (
@@ -65,7 +61,6 @@ export class CategoryPage extends React.Component {
         <Styles.ProductsContainer>
           {itemsToShow.map((product) => {
             const { id, brand, name, attributes, prices, gallery, inStock } = product;
-            console.log('ATTRIBUTES', name, attributes);
             return (
               <ProductCard
                 key={id}

@@ -18,7 +18,6 @@ export class CurrencySwitcherTemplate extends React.Component {
       isOpen: false
     };
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleToggling = this.handleToggling.bind(this);
     this.onOptionClicked = this.onOptionClicked.bind(this);
     this.wrapperRef = React.createRef();
@@ -28,7 +27,6 @@ export class CurrencySwitcherTemplate extends React.Component {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside);
     client.query({ query: CURRENCIES }).then((result) => {
-      console.log('MOUNT', result.data);
       this.setState({ currencies: result.data.currencies });
     });
   }
@@ -43,11 +41,6 @@ export class CurrencySwitcherTemplate extends React.Component {
     }
   }
 
-  handleChange(event) {
-    console.log(this.state);
-    this.setState({ currentOption: event.target.value });
-  }
-
   handleToggling() {
     this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
   }
@@ -56,14 +49,12 @@ export class CurrencySwitcherTemplate extends React.Component {
     return () => {
       this.setState({ isOpen: false });
       this.props.setCurrency(value);
-      console.log(value);
     };
   }
 
   render() {
     const { currencies, isOpen } = this.state;
     const { currency } = this.props;
-    console.log(currencies, currency);
     return (
       <ThemeProvider theme={theme}>
         <Styles.DropDownContainer ref={this.wrapperRef}>
@@ -75,7 +66,6 @@ export class CurrencySwitcherTemplate extends React.Component {
             <Styles.DropDownListContainer>
               <Styles.DropDownList>
                 {currencies.map((currencyLocal, index) => {
-                  console.log(index, currencyLocal);
                   return (
                     <Styles.ListItem onClick={this.onOptionClicked({ ...currencyLocal, index })} key={currencyLocal.label}>
                       {`${currencyLocal.symbol} ${currencyLocal.label}`}
