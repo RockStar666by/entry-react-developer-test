@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Modal } from '../../Modal/Modal';
 import { MiniCart } from '../MiniCart/MiniCart';
 import * as Styles from './styles';
+import { cartType } from '../../../types';
 
 export class CartButtonTemplate extends React.PureComponent {
   constructor(props) {
@@ -66,31 +66,4 @@ function mapState(state) {
 
 export const CartButton = connect(mapState)(CartButtonTemplate);
 
-CartButtonTemplate.propTypes = {
-  cart: PropTypes.shape({
-    allIds: PropTypes.arrayOf(PropTypes.string),
-    byIds: PropTypes.objectOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        brand: PropTypes.string,
-        name: PropTypes.string,
-        quantity: PropTypes.number,
-        options: PropTypes.objectOf(
-          PropTypes.shape({
-            id: PropTypes.string,
-            name: PropTypes.string,
-            type: PropTypes.string,
-            items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-          })
-        ),
-        prices: PropTypes.arrayOf(
-          PropTypes.shape({
-            currency: PropTypes.objectOf(PropTypes.string),
-            amount: PropTypes.number
-          })
-        ),
-        gallery: PropTypes.arrayOf(PropTypes.string)
-      })
-    )
-  }).isRequired
-};
+CartButtonTemplate.propTypes = { cart: cartType.isRequired };

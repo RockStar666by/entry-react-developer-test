@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bool, arrayOf, string } from 'prop-types';
 import * as Styles from './styles';
 
 export class Slider extends React.PureComponent {
@@ -53,5 +53,5 @@ export class Slider extends React.PureComponent {
   }
 }
 
-Slider.propTypes = { mini: PropTypes.bool, gallery: PropTypes.arrayOf(PropTypes.string).isRequired };
+Slider.propTypes = { mini: bool, gallery: arrayOf(string).isRequired };
 Slider.defaultProps = { mini: false };

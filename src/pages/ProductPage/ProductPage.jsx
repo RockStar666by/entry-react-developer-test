@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { string, shape, func } from 'prop-types';
 import { Markup } from 'interweave';
 import * as Styles from './styles';
 import { addToCart } from '../../redux/actions';
@@ -10,6 +10,7 @@ import { Gallery } from '../../feature/Gallery/Gallery';
 import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher/ParamSwitcher';
 import { client } from '../../apollo/apollo';
 import { PRODUCT } from '../../queries/getProduct';
+import { currencyType } from '../../types';
 
 // eslint-disable-next-line
 const withRouter = (WrappedComponent) => () => {
@@ -126,11 +127,7 @@ export const ProductPage = connect(mapState, actionCreators)(ProductPageTemplate
 export const ProductPageWithRouter = withRouter(ProductPage);
 
 ProductPageTemplate.propTypes = {
-  match: PropTypes.shape({ params: PropTypes.shape({ productId: PropTypes.string }) }).isRequired,
-  addToCart: PropTypes.func.isRequired,
-  currency: PropTypes.shape({
-    index: PropTypes.number,
-    label: PropTypes.string,
-    symbol: PropTypes.string
-  }).isRequired
+  match: shape({ params: shape({ productId: string }) }).isRequired,
+  addToCart: func.isRequired,
+  currency: currencyType.isRequired
 };

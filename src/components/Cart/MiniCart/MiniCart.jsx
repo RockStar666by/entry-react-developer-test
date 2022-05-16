@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
 import { CartItem } from '../CartItem/CartItem';
 import { clearCart } from '../../../redux/actions';
 import * as Styles from './styles';
+import { currencyType, cartType, refType } from '../../../types';
 
 export class MiniCartTemplate extends React.PureComponent {
   constructor(props) {
@@ -115,38 +116,9 @@ const actionCreators = { clearCart };
 export const MiniCart = connect(mapState, actionCreators)(MiniCartTemplate);
 
 MiniCartTemplate.propTypes = {
-  clearCart: PropTypes.func.isRequired,
-  cartToggleRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]).isRequired,
-  hideModal: PropTypes.func.isRequired,
-  currency: PropTypes.shape({
-    index: PropTypes.number,
-    label: PropTypes.string,
-    symbol: PropTypes.string
-  }).isRequired,
-  cart: PropTypes.shape({
-    allIds: PropTypes.arrayOf(PropTypes.string),
-    byIds: PropTypes.objectOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        brand: PropTypes.string,
-        name: PropTypes.string,
-        quantity: PropTypes.number,
-        options: PropTypes.objectOf(
-          PropTypes.shape({
-            id: PropTypes.string,
-            name: PropTypes.string,
-            type: PropTypes.string,
-            items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-          })
-        ),
-        prices: PropTypes.arrayOf(
-          PropTypes.shape({
-            currency: PropTypes.objectOf(PropTypes.string),
-            amount: PropTypes.number
-          })
-        ),
-        gallery: PropTypes.arrayOf(PropTypes.string)
-      })
-    )
-  }).isRequired
+  clearCart: func.isRequired,
+  cartToggleRef: refType.isRequired,
+  hideModal: func.isRequired,
+  currency: currencyType.isRequired,
+  cart: cartType.isRequired
 };

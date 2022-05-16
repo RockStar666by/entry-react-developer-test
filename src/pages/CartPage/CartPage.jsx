@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
 import * as Styles from './styles';
 import { CartItem } from '../../components/Cart/CartItem/CartItem';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
 import { clearCart } from '../../redux/actions';
+import { cartType, currencyType } from '../../types';
 
 export class CartPageTemplate extends React.Component {
   constructor(props) {
@@ -104,36 +105,7 @@ const actionCreators = { clearCart };
 export const CartPage = connect(mapState, actionCreators)(CartPageTemplate);
 
 CartPageTemplate.propTypes = {
-  clearCart: PropTypes.func.isRequired,
-  currency: PropTypes.shape({
-    index: PropTypes.number,
-    label: PropTypes.string,
-    symbol: PropTypes.string
-  }).isRequired,
-  cart: PropTypes.shape({
-    allIds: PropTypes.arrayOf(PropTypes.string),
-    byIds: PropTypes.objectOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-        brand: PropTypes.string,
-        name: PropTypes.string,
-        quantity: PropTypes.number,
-        options: PropTypes.objectOf(
-          PropTypes.shape({
-            id: PropTypes.string,
-            name: PropTypes.string,
-            type: PropTypes.string,
-            items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-          })
-        ),
-        prices: PropTypes.arrayOf(
-          PropTypes.shape({
-            currency: PropTypes.objectOf(PropTypes.string),
-            amount: PropTypes.number
-          })
-        ),
-        gallery: PropTypes.arrayOf(PropTypes.string)
-      })
-    )
-  }).isRequired
+  clearCart: func.isRequired,
+  currency: currencyType.isRequired,
+  cart: cartType.isRequired
 };

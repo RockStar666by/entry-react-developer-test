@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { string, bool, func } from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import * as Styles from './styles';
 
@@ -18,11 +18,11 @@ export class CustomButton extends React.Component {
 }
 
 CustomButton.propTypes = {
-  children: PropTypes.string,
-  small: PropTypes.bool,
-  filled: PropTypes.bool,
-  wide: PropTypes.bool,
-  actionOnClick: PropTypes.func
+  children: string,
+  small: bool,
+  filled: bool,
+  wide: bool,
+  actionOnClick: func
 };
 
 CustomButton.defaultProps = {

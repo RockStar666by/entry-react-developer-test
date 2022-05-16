@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import PropTypes from 'prop-types';
+import { string, number, bool, func } from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteFromCart } from '../../../redux/actions';
 import { Slider } from '../../../feature/ImageSlider/Slider';
@@ -9,6 +9,7 @@ import { client } from '../../../apollo/apollo';
 import { CartCounter } from '../../../feature/Counter/CartCounter/CartCounter';
 import { PRODUCT } from '../../../queries/getProduct';
 import * as Styles from './styles';
+import { currencyType, optionsType, pricesType } from '../../../types';
 
 const theme = { primary: '#5ece7b' };
 
@@ -96,34 +97,18 @@ const actionCreators = { deleteFromCart };
 export const CartItem = connect(mapState, actionCreators)(CartItemTemplate);
 
 CartItemTemplate.propTypes = {
-  hideModal: PropTypes.func,
-  deleteFromCart: PropTypes.func.isRequired,
-  mini: PropTypes.bool,
-  miniCart: PropTypes.bool,
-  currency: PropTypes.shape({
-    index: PropTypes.number,
-    label: PropTypes.string,
-    symbol: PropTypes.string
-  }).isRequired,
-  id: PropTypes.string.isRequired,
-  brand: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  quantity: PropTypes.number.isRequired,
-  productId: PropTypes.string.isRequired,
-  options: PropTypes.objectOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-    })
-  ).isRequired,
-  prices: PropTypes.arrayOf(
-    PropTypes.shape({
-      currency: PropTypes.objectOf(PropTypes.string),
-      amount: PropTypes.number
-    })
-  ).isRequired
+  hideModal: func,
+  deleteFromCart: func.isRequired,
+  mini: bool,
+  miniCart: bool,
+  currency: currencyType.isRequired,
+  id: string.isRequired,
+  brand: string.isRequired,
+  name: string.isRequired,
+  quantity: number.isRequired,
+  productId: string.isRequired,
+  options: optionsType.isRequired,
+  prices: pricesType.isRequired
 };
 
 CartItemTemplate.defaultProps = { mini: false, miniCart: false, hideModal: () => {} };

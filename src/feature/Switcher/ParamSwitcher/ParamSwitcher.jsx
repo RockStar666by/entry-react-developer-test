@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bool, arrayOf, objectOf, string, func } from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import * as Styles from './styles';
 
@@ -71,13 +71,13 @@ export class ParamSwitcher extends React.Component {
 }
 
 ParamSwitcher.propTypes = {
-  mini: PropTypes.bool,
-  miniCart: PropTypes.bool,
-  options: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)).isRequired,
-  attrType: PropTypes.string.isRequired,
-  header: PropTypes.string.isRequired,
-  addParentState: PropTypes.func,
-  selectedOption: PropTypes.objectOf(PropTypes.string)
+  mini: bool,
+  miniCart: bool,
+  options: arrayOf(objectOf(string)).isRequired,
+  attrType: string.isRequired,
+  header: string.isRequired,
+  addParentState: func,
+  selectedOption: objectOf(string)
 };
 
 ParamSwitcher.defaultProps = { mini: false, miniCart: false, addParentState: () => {}, selectedOption: {} };

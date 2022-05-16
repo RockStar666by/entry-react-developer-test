@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { string } from 'prop-types';
 import * as Styles from './styles';
 import { ProductCard } from '../../components/ProductCard/ProductCard';
 import { CATEGORY } from '../../queries/getCategory';
@@ -87,5 +87,5 @@ export class CategoryPage extends React.Component {
   }
 }
 
-CategoryPage.propTypes = { category: PropTypes.string, title: PropTypes.string };
+CategoryPage.propTypes = { category: string, title: string };
 CategoryPage.defaultProps = { category: 'all', title: 'All Products' };

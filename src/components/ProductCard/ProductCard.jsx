@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import PropTypes from 'prop-types';
+import { string, func, arrayOf } from 'prop-types';
 import { addToCart } from '../../redux/actions';
 import { Counter } from '../../feature/Counter/ProductCardCounter/Counter';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
 import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher/ParamSwitcher';
 import * as Styles from './styles';
+import { attributesType, currencyType, pricesType } from '../../types';
 
 const theme = { primary: '#5ece7b' };
 export class ProductCardTemplate extends React.PureComponent {
@@ -114,28 +115,12 @@ const actionCreators = { addToCart };
 export const ProductCard = connect(mapState, actionCreators)(ProductCardTemplate);
 
 ProductCardTemplate.propTypes = {
-  id: PropTypes.string.isRequired,
-  brand: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  currency: PropTypes.shape({
-    index: PropTypes.number,
-    label: PropTypes.string,
-    symbol: PropTypes.string
-  }).isRequired,
-  addToCart: PropTypes.func.isRequired,
-  gallery: PropTypes.arrayOf(PropTypes.string).isRequired,
-  attributes: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      items: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-    })
-  ).isRequired,
-  prices: PropTypes.arrayOf(
-    PropTypes.shape({
-      currency: PropTypes.objectOf(PropTypes.string),
-      amount: PropTypes.number
-    })
-  ).isRequired
+  id: string.isRequired,
+  brand: string.isRequired,
+  name: string.isRequired,
+  currency: currencyType.isRequired,
+  addToCart: func.isRequired,
+  gallery: arrayOf(string).isRequired,
+  attributes: attributesType.isRequired,
+  prices: pricesType.isRequired
 };

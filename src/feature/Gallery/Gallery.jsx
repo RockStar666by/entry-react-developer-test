@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { arrayOf, string } from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import * as Styles from './styles';
 
@@ -46,4 +46,4 @@ export class Gallery extends React.Component {
   }
 }
 
-Gallery.propTypes = { gallery: PropTypes.arrayOf(PropTypes.string).isRequired };
+Gallery.propTypes = { gallery: arrayOf(string).isRequired };

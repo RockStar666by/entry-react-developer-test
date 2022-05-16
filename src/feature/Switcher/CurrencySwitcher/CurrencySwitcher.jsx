@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
 import { setCurrency } from '../../../redux/actions';
 import { CURRENCIES } from '../../../queries/getCurrencies';
 import { client } from '../../../apollo/apollo';
 import * as Styles from './styles';
+import { currencyType } from '../../../types';
 
 const theme = { primary: '#5ece7b' };
 
@@ -102,10 +103,6 @@ const actionCreators = { setCurrency };
 export const CurrencySwitcher = connect(mapState, actionCreators)(CurrencySwitcherTemplate);
 
 CurrencySwitcherTemplate.propTypes = {
-  setCurrency: PropTypes.func.isRequired,
-  currency: PropTypes.shape({
-    index: PropTypes.number,
-    label: PropTypes.string,
-    symbol: PropTypes.string
-  }).isRequired
+  setCurrency: func.isRequired,
+  currency: currencyType.isRequired
 };

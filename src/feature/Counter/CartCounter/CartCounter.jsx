@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { bool, number, string, func } from 'prop-types';
 import { ThemeProvider } from 'styled-components';
 import * as Styles from './styles';
 import { increaseCount, decreaseCount } from '../../../redux/actions';
@@ -55,10 +55,10 @@ const actionCreators = { increaseCount, decreaseCount };
 export const CartCounter = connect(null, actionCreators)(CartCounterTemplate);
 
 CartCounterTemplate.propTypes = {
-  mini: PropTypes.bool,
-  quantity: PropTypes.number.isRequired,
-  productId: PropTypes.string.isRequired,
-  increaseCount: PropTypes.func.isRequired,
-  decreaseCount: PropTypes.func.isRequired
+  mini: bool,
+  quantity: number.isRequired,
+  productId: string.isRequired,
+  increaseCount: func.isRequired,
+  decreaseCount: func.isRequired
 };
 CartCounterTemplate.defaultProps = { mini: false };
