@@ -7,7 +7,7 @@ import { deleteFromCart } from '../../redux/actions';
 import { Slider } from '../../feature/ImageSlider/Slider';
 import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
 import { client } from '../../apollo/apollo';
-import { CartCounter } from '../../feature/Counter/CartCounter';
+import { CartCounter } from '../../feature/Counter/CartCounter/CartCounter';
 import DeleteIcon from '../../assets/delete-button.svg';
 import { PRODUCT } from '../../queries/getProduct';
 

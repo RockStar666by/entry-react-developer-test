@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { addToCart } from '../../redux/actions';
 import CartIcon from '../../assets/cart-icon-white.svg';
-import { Counter } from '../../feature/Counter/Counter';
+import { Counter } from '../../feature/Counter/ProductCardCounter/Counter';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
 import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
 
