@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { CATEGORIES } from './Queries';
+import { CATEGORIES } from '../../queries/getCategories';
 import { client } from '../../apollo/apollo';
 
 const theme = { primary: '#5ece7b' };

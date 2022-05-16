@@ -1,42 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ProductCard } from '../components/ProductCard/ProductCard';
-import { CATEGORY } from './Queries';
-import { client } from '../apollo/apollo';
-import { CustomButton } from '../feature/CustomButton/CustomButton';
+import * as Styles from './styles';
+import { ProductCard } from '../../components/ProductCard/ProductCard';
+import { CATEGORY } from '../../queries/getCategory';
+import { client } from '../../apollo/apollo';
+import { CustomButton } from '../../feature/CustomButton/CustomButton';
 
 const itemsPerPage = 6;
 let arrayForHoldingItems = [];
-
-const CategoryPageContainer = styled.div`
-  position: relative;
-  width: 1440px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  box-sizing: border-box;
-  padding: 80px 100px 0;
-  margin-bottom: 190px;
-`;
-
-const CategoryPageTitle = styled.h2`
-  margin: 0;
-  position: relative;
-  margin-bottom: 100px;
-  height: 70px;
-  font-weight: 400;
-  font-size: 42px;
-  line-height: 70px;
-`;
-
-const ProductsContainer = styled.div`
-  position: relative;
-  margin-bottom: 50px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-`;
 
 export class CategoryPage extends React.Component {
   constructor(props) {
@@ -87,9 +58,11 @@ export class CategoryPage extends React.Component {
     return loading ? (
       <h2>LOADING...</h2>
     ) : (
-      <CategoryPageContainer>
-        <CategoryPageTitle>{category === 'all' ? title : category.charAt(0).toUpperCase() + category.slice(1)}</CategoryPageTitle>
-        <ProductsContainer>
+      <Styles.CategoryPageContainer>
+        <Styles.CategoryPageTitle>
+          {category === 'all' ? title : category.charAt(0).toUpperCase() + category.slice(1)}
+        </Styles.CategoryPageTitle>
+        <Styles.ProductsContainer>
           {/* eslint-disable-next-line */}
           {itemsToShow.map((product) => {
             const { id, brand, name, attributes, prices, gallery, inStock } = product;
@@ -107,9 +80,9 @@ export class CategoryPage extends React.Component {
               />
             );
           })}
-        </ProductsContainer>
+        </Styles.ProductsContainer>
         {nextItems < categoryProducts.length && <CustomButton actionOnClick={this.handleShowMoreItems}>SHOW MORE</CustomButton>}
-      </CategoryPageContainer>
+      </Styles.CategoryPageContainer>
     );
   }
 }

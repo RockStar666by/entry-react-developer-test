@@ -4,7 +4,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import { setCurrency } from '../../redux/actions';
 import ArrowImage from '../../assets/dropdown-arrow.svg';
-import { CURRENCIES } from './Queries';
+import { CURRENCIES } from '../../queries/getCurrencies';
 import { client } from '../../apollo/apollo';
 import CheckedIcon from '../../assets/check-mark.svg';
 

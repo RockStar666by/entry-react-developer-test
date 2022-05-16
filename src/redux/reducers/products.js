@@ -1,5 +1,5 @@
 import { createReducer, current } from '@reduxjs/toolkit';
-import { ADD_TO_CART, INCREASE_COUNT, DECREASE_COUNT } from '../actionTypes';
+import { ADD_TO_CART, INCREASE_COUNT, DECREASE_COUNT, DELETE_FROM_CART, CLEAR_CART } from '../actionTypes';
 
 export const initialState = {
   allIds: [],
@@ -7,42 +7,43 @@ export const initialState = {
 };
 
 export const productsReducer = createReducer(initialState, (builder) => {
-  builder.addCase(ADD_TO_CART, (state, action) => {
-    const { id, content } = action.payload;
-    const products = Object.entries(state.byIds);
-    console.log(current(state.byIds));
-    let duplicate = false;
+  builder
+    .addCase(ADD_TO_CART, (state, action) => {
+      const { id, content } = action.payload;
+      const products = Object.entries(state.byIds);
+      console.log(current(state.byIds));
+      let duplicate = false;
 
-    if (Object.keys(state.byIds).length === 0) {
-      state.allIds.push(id);
-      state.byIds = {
-        ...state.byIds,
-        [id]: { ...content }
-      };
-      console.log('PRODUCT SUCCESSFULLY ADDED TO CART !!!');
-    } else {
-      for (let i = 0; i < products.length; i++) {
-        console.log(products);
-        if (products[i][1].id === content.id && JSON.stringify(products[i][1].options) === JSON.stringify(content.options)) {
-          console.log('DUPLICATE !!!');
-          duplicate = true;
-          console.log('ADD QUANTITY');
-          state.byIds = {
-            ...state.byIds,
-            [products[i][0]]: { ...content, quantity: products[i][1].quantity + content.quantity }
-          };
-        }
-      }
-      if (!duplicate) {
+      if (Object.keys(state.byIds).length === 0) {
         state.allIds.push(id);
         state.byIds = {
           ...state.byIds,
           [id]: { ...content }
         };
         console.log('PRODUCT SUCCESSFULLY ADDED TO CART !!!');
+      } else {
+        for (let i = 0; i < products.length; i++) {
+          console.log(products);
+          if (products[i][1].id === content.id && JSON.stringify(products[i][1].options) === JSON.stringify(content.options)) {
+            console.log('DUPLICATE !!!');
+            duplicate = true;
+            console.log('ADD QUANTITY');
+            state.byIds = {
+              ...state.byIds,
+              [products[i][0]]: { ...content, quantity: products[i][1].quantity + content.quantity }
+            };
+          }
+        }
+        if (!duplicate) {
+          state.allIds.push(id);
+          state.byIds = {
+            ...state.byIds,
+            [id]: { ...content }
+          };
+          console.log('PRODUCT SUCCESSFULLY ADDED TO CART !!!');
+        }
       }
-    }
-  })
+    })
     .addCase(INCREASE_COUNT, (state, action) => {
       const { payload } = action;
       console.log(action.payload);
@@ -60,16 +61,16 @@ export const productsReducer = createReducer(initialState, (builder) => {
         ...state.byIds,
         [payload]: { ...state.byIds[payload], quantity: state.byIds[payload].quantity - 1 }
       };
+    })
+    .addCase(DELETE_FROM_CART, (state, action) => {
+      console.log(action.payload);
+      console.log(state.allIds, state.byIds);
+      state.allIds = state.allIds.filter((item) => item !== action.payload);
+      delete state.byIds[action.payload];
+      console.log(state.allIds, state.byIds);
+    })
+    .addCase(CLEAR_CART, (state) => {
+      state.allIds = [];
+      state.byIds = {};
     });
-  // .addCase(CLEAR_CART, (state, action) => {
-  //   const { id, content } = action.payload;
-  //   state.allIds.push(id);
-  //   state.byIds = {
-  //     ...state.byIds,
-  //     [id]: {
-  //       content,
-  //       completed: false
-  //     }
-  //   };
-  // });
 });

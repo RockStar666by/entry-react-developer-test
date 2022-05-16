@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { CATEGORIES } from '../components/Navigation/Queries';
+import { CATEGORIES } from '../queries/getCategories';
 import { client } from '../apollo/apollo';
-import { CategoryPage } from '../pages/CategoryPage';
-import { ProductPageWithRouter } from '../pages/ProductPage';
-import { CartPage } from '../pages/CartPage';
+import { CategoryPage } from '../pages/CategoryPage/CategoryPage';
+import { ProductPageWithRouter } from '../pages/ProductPage/ProductPage';
+import { CartPage } from '../pages/CartPage/CartPage';
 
 export class AppRouting extends React.Component {
   constructor(props) {

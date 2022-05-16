@@ -2,49 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled, { ThemeProvider, css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { gql } from '@apollo/client';
 import { connect } from 'react-redux';
-import { addToCart } from '../../redux/actions';
+import { deleteFromCart } from '../../redux/actions';
 import { Slider } from '../../feature/ImageSlider/Slider';
 import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
 import { client } from '../../apollo/apollo';
 import { CartCounter } from '../../feature/Counter/CartCounter';
 import DeleteIcon from '../../assets/delete-button.svg';
-
-const CART_ITEM = gql`
-  query GetProduct($product: String!) {
-    product(id: $product) {
-      id
-      name
-      inStock
-      gallery
-      description
-      category
-      __typename @skip(if: true)
-      attributes {
-        id
-        name
-        type
-        __typename @skip(if: true)
-        items {
-          displayValue
-          value
-          id
-          __typename @skip(if: true)
-        }
-      }
-      prices {
-        __typename @skip(if: true)
-        currency {
-          label
-          symbol
-        }
-        amount
-      }
-      brand
-    }
-  }
-`;
+import { PRODUCT } from '../../queries/getProduct';
 
 const theme = { primary: '#5ece7b' };
 
@@ -77,20 +42,33 @@ const CartItemContainer = styled.div`
   }`};
 `;
 
-const DeleteButton = styled.button`
-  cursor: pointer;
-  position: absolute;
+const SmallDeleteButton = css`
+  width: 24px;
+  height: 24px;
+  right: 16px;
+  top: 0px;
+  background-size: 16px;
+`;
+
+const BigDeleteButton = css`
   width: 45px;
   height: 45px;
   right: 24px;
   top: 24px;
+  background-size: 24px;
+`;
+
+const DeleteButton = styled.button`
+  cursor: pointer;
+  position: absolute;
   border: 1px solid black;
   background: url(${DeleteIcon}) center no-repeat;
-  background-size: 24px;
+  ${(props) => (props.mini ? `${SmallDeleteButton}` : `${BigDeleteButton}`)}
   opacity: 0;
-  transition: opacity 0.1s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
   z-index: 1;
   &:hover {
+    filter: invert(20%) sepia(89%) saturate(7314%) hue-rotate(357deg) brightness(92%) contrast(119%);
     opacity: 1 !important;
   }
 `;
@@ -194,14 +172,14 @@ export class CartItemTemplate extends React.PureComponent {
   }
 
   componentDidMount() {
-    client.query({ query: CART_ITEM, variables: { product: this.props.id } }).then((result) => {
+    client.query({ query: PRODUCT, variables: { product: this.props.id } }).then((result) => {
       console.log(result);
       this.setState({ productData: result.data.product, loading: result.data.loading });
     });
   }
 
   render() {
-    const { id, brand, name, options, prices, quantity, productId, currency, mini, miniCart } = this.props;
+    const { id, brand, name, options, prices, quantity, productId, currency, mini, miniCart, hideModal } = this.props;
     const { loading, productData } = this.state;
     const { attributes, gallery } = this.state.productData;
     console.log(attributes, id, options, prices, productData);
@@ -210,9 +188,9 @@ export class CartItemTemplate extends React.PureComponent {
     ) : (
       <ThemeProvider theme={theme}>
         <CartItemContainer mini={mini}>
-          <DeleteButton className="delete-button" />
+          <DeleteButton mini={mini} className="delete-button" onClick={() => this.props.deleteFromCart(productId)} />
           <SettingsLeft>
-            <CustomLink to={`/product/${id}`}>
+            <CustomLink to={`/product/${id}`} onClick={hideModal}>
               <CartItemHeader mini={mini}>{brand}</CartItemHeader>
               <CartItemType mini={mini}>{name}</CartItemType>
             </CustomLink>
@@ -252,11 +230,13 @@ function mapState(state) {
   return { currency };
 }
 
-const actionCreators = { addToCart };
+const actionCreators = { deleteFromCart };
 
 export const CartItem = connect(mapState, actionCreators)(CartItemTemplate);
 
 CartItemTemplate.propTypes = {
+  hideModal: PropTypes.func,
+  deleteFromCart: PropTypes.func.isRequired,
   mini: PropTypes.bool,
   miniCart: PropTypes.bool,
   currency: PropTypes.shape({
@@ -285,4 +265,4 @@ CartItemTemplate.propTypes = {
   ).isRequired
 };
 
-CartItemTemplate.defaultProps = { mini: false, miniCart: false };
+CartItemTemplate.defaultProps = { mini: false, miniCart: false, hideModal: () => {} };

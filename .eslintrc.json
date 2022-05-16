@@ -42,6 +42,7 @@
     "implicit-arrow-linebreak": "off",
     "operator-linebreak": "off",
     "no-plusplus": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-nested-ternary": "off"
   }
 }

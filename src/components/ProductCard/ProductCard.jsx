@@ -202,9 +202,7 @@ export class ProductCardTemplate extends React.PureComponent {
               ) : (
                 <CartInfoContainer>
                   <CartHeader>OUT OF STOCK</CartHeader>
-                  <CustomButton wide>
-                    ADD TO WISHLIST
-                  </CustomButton>
+                  <CustomButton wide>ADD TO WISHLIST</CustomButton>
                 </CartInfoContainer>
               )}
             </CartOverlay>

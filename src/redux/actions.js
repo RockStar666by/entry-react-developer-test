@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { ADD_TO_CART, INCREASE_COUNT, DECREASE_COUNT, SET_CURRENCY, SET_CART_QUANTITY } from './actionTypes';
+import { ADD_TO_CART, INCREASE_COUNT, DECREASE_COUNT, SET_CURRENCY, SET_CART_QUANTITY, DELETE_FROM_CART, CLEAR_CART } from './actionTypes';
 
 export const addToCart = (content) => ({
   type: ADD_TO_CART,
@@ -28,3 +28,10 @@ export const decreaseCount = (content) => ({
   type: DECREASE_COUNT,
   payload: content
 });
+
+export const deleteFromCart = (content) => ({
+  type: DELETE_FROM_CART,
+  payload: content
+});
+
+export const clearCart = () => ({ type: CLEAR_CART });

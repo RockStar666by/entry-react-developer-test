@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-const modalRoot = document.getElementById('cart-modal-root');
+const modalRoot = document.getElementById('modal-root');
 
-export class CartModal extends React.Component {
+export class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.el = document.createElement('div');
@@ -24,4 +24,4 @@ export class CartModal extends React.Component {
   }
 }
 
-CartModal.propTypes = { children: PropTypes.element.isRequired };
+Modal.propTypes = { children: PropTypes.element.isRequired };

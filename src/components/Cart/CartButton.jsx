@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CartImage from '../../assets/cart-icon.svg';
-import { CartModal } from './CartModal';
+import { Modal } from '../Modal/Modal';
 import { MiniCart } from './MiniCart';
 
 const CartIcon = styled.button`
@@ -84,11 +84,11 @@ export class CartButtonTemplate extends React.PureComponent {
           {this.getQuantity() > 0 && <CartBadge>{this.getQuantity()}</CartBadge>}
         </CartIcon>
         {isOpen && (
-          <CartModal>
+          <Modal>
             <ModalContainer>
               <MiniCart hideModal={this.hideModal} cartToggleRef={this.cartToggleRef} />
             </ModalContainer>
-          </CartModal>
+          </Modal>
         )}
       </>
     );

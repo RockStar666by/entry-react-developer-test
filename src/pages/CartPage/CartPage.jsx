@@ -1,49 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { CartItem } from '../components/CartItem/CartItem';
-import { addToCart } from '../redux/actions';
-import { CustomButton } from '../feature/CustomButton/CustomButton';
-
-const CartPageContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 1440px;
-  box-sizing: border-box;
-  padding: 80px 100px 0;
-  margin-bottom: 275px;
-`;
-
-const CartHeader = styled.h1`
-  margin: 0;
-  margin-bottom: 55px;
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 40px;
-  text-transform: uppercase;
-  color: #1d1f22;
-`;
-
-const CartItemsContainer = styled.div``;
-const CheckoutContainer = styled.div``;
-const CheckoutGrid = styled.div``;
-const GridRow = styled.p`
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  grid-gap: 10px;
-  grid-template-areas: 'attributeName attributeValue';
-  font-size: 24px;
-  line-height: 28px;
-`;
-const GridName = styled.span`
-  font-weight: 400;
-`;
-const GridValue = styled.span`
-  font-weight: 700;
-`;
+import * as Styles from './styles';
+import { CartItem } from '../../components/Cart/CartItem';
+import { CustomButton } from '../../feature/CustomButton/CustomButton';
+import { clearCart } from '../../redux/actions';
 
 export class CartPageTemplate extends React.Component {
   constructor(props) {
@@ -85,13 +46,13 @@ export class CartPageTemplate extends React.Component {
     const { allIds, byIds } = this.props.cart;
     console.log(allIds, byIds);
     return (
-      <CartPageContainer>
-        <CartHeader>CART</CartHeader>
+      <Styles.CartPageContainer>
+        <Styles.CartHeader>CART</Styles.CartHeader>
         {this.getQuantity() === 0 ? (
           <h2>No items in cart.</h2>
         ) : (
           <>
-            <CartItemsContainer>
+            <Styles.CartItemsContainer>
               {allIds.map((elem) => {
                 console.log(elem, byIds[elem]);
                 const { id, brand, name, options, prices, quantity } = byIds[elem];
@@ -108,27 +69,27 @@ export class CartPageTemplate extends React.Component {
                   />
                 );
               })}
-            </CartItemsContainer>
-            <CheckoutContainer>
-              <CheckoutGrid>
-                <GridRow>
-                  <GridName>Tax 21%:</GridName>
-                  <GridValue>{this.getTaxes()}</GridValue>
-                </GridRow>
-                <GridRow>
-                  <GridName>Quantity:</GridName>
-                  <GridValue>{this.getQuantity()}</GridValue>
-                </GridRow>
-                <GridRow>
-                  <GridName>Total:</GridName>
-                  <GridValue>{this.getTotal()}</GridValue>
-                </GridRow>
-              </CheckoutGrid>
-              <CustomButton>ORDER</CustomButton>
-            </CheckoutContainer>
+            </Styles.CartItemsContainer>
+            <Styles.CheckoutContainer>
+              <Styles.CheckoutGrid>
+                <Styles.GridRow>
+                  <Styles.GridName>Tax 21%:</Styles.GridName>
+                  <Styles.GridValue>{this.getTaxes()}</Styles.GridValue>
+                </Styles.GridRow>
+                <Styles.GridRow>
+                  <Styles.GridName>Quantity:</Styles.GridName>
+                  <Styles.GridValue>{this.getQuantity()}</Styles.GridValue>
+                </Styles.GridRow>
+                <Styles.GridRow>
+                  <Styles.GridName>Total:</Styles.GridName>
+                  <Styles.GridValue>{this.getTotal()}</Styles.GridValue>
+                </Styles.GridRow>
+              </Styles.CheckoutGrid>
+              <CustomButton actionOnClick={this.props.clearCart}>ORDER</CustomButton>
+            </Styles.CheckoutContainer>
           </>
         )}
-      </CartPageContainer>
+      </Styles.CartPageContainer>
     );
   }
 }
@@ -138,11 +99,12 @@ function mapState(state) {
   return { cart: products, currency };
 }
 
-const actionCreators = { addToCart };
+const actionCreators = { clearCart };
 
 export const CartPage = connect(mapState, actionCreators)(CartPageTemplate);
 
 CartPageTemplate.propTypes = {
+  clearCart: PropTypes.func.isRequired,
   currency: PropTypes.shape({
     index: PropTypes.number,
     label: PropTypes.string,

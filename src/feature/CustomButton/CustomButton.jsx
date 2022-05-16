@@ -22,6 +22,7 @@ const SmallButton = css`
 
 const ButtonContainer = styled.button`
   cursor: pointer;
+  margin: 0 auto;
   font-weight: 400;
   font-family: inherit;
   text-align: center;
@@ -30,6 +31,9 @@ const ButtonContainer = styled.button`
   ${(props) => (props.small ? `${SmallButton}` : `${BigButton}`)};
   width: ${(props) => props.wide && '100%'};
   background: ${(props) => props.theme.primary};
+  &:hover {
+    filter: drop-shadow(0px 4px 11px rgba(29, 31, 34, 0.1));
+  }
 `;
 
 export class CustomButton extends React.Component {

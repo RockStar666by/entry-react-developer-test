@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CartItem } from '../CartItem/CartItem';
+import { CartItem } from './CartItem';
+import { clearCart } from '../../redux/actions';
 
 const MiniCartWrapper = styled.div`
   position: relative;
@@ -20,7 +21,7 @@ const MiniCartContainer = styled.div`
   position: relative;
   right: -28px;
   width: 325px;
-  height: 680px;
+  ${(props) => (props.quantity > 0 ? (props.quantity > 1 ? 'height: 680px;' : 'height: 525px;') : 'height: 200px;')};
   background: white;
   overflow: hidden;
 `;
@@ -33,8 +34,12 @@ const CartHeader = styled.p`
   }
 `;
 
+const NoItems = styled.h3`
+  margin-left: 20px;
+`;
+
 const CartItemContainer = styled.div`
-  height: 420px;
+  ${(props) => (props.quantity > 0 ? (props.quantity > 1 ? 'height: 420px;' : 'height: 265px;') : 'height: 20px;')};
   padding: 0;
   overflow: hidden;
   ul {
@@ -171,41 +176,48 @@ export class MiniCartTemplate extends React.PureComponent {
     const { hideModal } = this.props;
     return (
       <MiniCartWrapper>
-        <MiniCartContainer ref={this.wrapperRef}>
-          <CartHeader>
-            {/* eslint-disable-next-line */}
-            <span>My bag,</span> {this.getQuantity()} items
-          </CartHeader>
-          <CartItemContainer>
-            {allIds.map((elem) => {
-              console.log(elem, byIds[elem]);
-              const { id, brand, name, options, prices, quantity } = byIds[elem];
-              return (
-                <CartItem
-                  mini
-                  miniCart
-                  key={elem}
-                  id={id}
-                  brand={brand}
-                  name={name}
-                  options={options}
-                  prices={prices}
-                  quantity={quantity}
-                  productId={elem}
-                />
-              );
-            })}
-          </CartItemContainer>
-          <MiniCartTotal>
-            <span>Total</span>
-            <span>{this.getTotal()}</span>
-          </MiniCartTotal>
-          <MiniCartButtons>
-            <ViewBagButton as={NavLink} to="/cart" onClick={hideModal}>
-              VIEW BAG
-            </ViewBagButton>
-            <CheckoutButton>CHECK OUT</CheckoutButton>
-          </MiniCartButtons>
+        <MiniCartContainer quantity={allIds.length} ref={this.wrapperRef}>
+          {allIds.length > 0 ? (
+            <>
+              <CartHeader>
+                {/* eslint-disable-next-line */}
+                <span>My bag,</span> {this.getQuantity()} items
+              </CartHeader>
+              <CartItemContainer quantity={allIds.length}>
+                {allIds.map((elem) => {
+                  console.log(elem, byIds[elem]);
+                  const { id, brand, name, options, prices, quantity } = byIds[elem];
+                  return (
+                    <CartItem
+                      mini
+                      miniCart
+                      key={elem}
+                      id={id}
+                      brand={brand}
+                      name={name}
+                      options={options}
+                      prices={prices}
+                      quantity={quantity}
+                      productId={elem}
+                      hideModal={hideModal}
+                    />
+                  );
+                })}
+              </CartItemContainer>
+              <MiniCartTotal>
+                <span>Total</span>
+                <span>{this.getTotal()}</span>
+              </MiniCartTotal>
+              <MiniCartButtons>
+                <ViewBagButton as={NavLink} to="/cart" onClick={hideModal}>
+                  VIEW BAG
+                </ViewBagButton>
+                <CheckoutButton onClick={this.props.clearCart}>CHECK OUT</CheckoutButton>
+              </MiniCartButtons>
+            </>
+          ) : (
+            <NoItems>No items in cart.</NoItems>
+          )}
         </MiniCartContainer>
       </MiniCartWrapper>
     );
@@ -217,9 +229,12 @@ function mapState(state) {
   return { cart: products, currency };
 }
 
-export const MiniCart = connect(mapState)(MiniCartTemplate);
+const actionCreators = { clearCart };
+
+export const MiniCart = connect(mapState, actionCreators)(MiniCartTemplate);
 
 MiniCartTemplate.propTypes = {
+  clearCart: PropTypes.func.isRequired,
   cartToggleRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.instanceOf(Element) })]).isRequired,
   hideModal: PropTypes.func.isRequired,
   currency: PropTypes.shape({

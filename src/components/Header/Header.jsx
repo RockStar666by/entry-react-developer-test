@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Navigation } from '../Navigation/Navigation';
 import LogoImage from '../../assets/a-logo.svg';
 import { CurrencySwitcher } from '../../feature/Switcher/CurrencySwitcher';
-import { CartButton } from '../CartModal/CartButton';
+import { CartButton } from '../Cart/CartButton';
 
 const HeaderWrapper = styled.header`
   position: relative;
