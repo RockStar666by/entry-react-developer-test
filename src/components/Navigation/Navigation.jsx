@@ -1,43 +1,10 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { CATEGORIES } from '../../queries/getCategories';
 import { client } from '../../apollo/apollo';
+import * as Styles from './styles';
 
 const theme = { primary: '#5ece7b' };
-
-const NavigationWrapper = styled.nav`
-  position: relative;
-  display: flex;
-  height: 100%;
-  align-items: center;
-`;
-
-const NavList = styled.ul`
-  padding: 0;
-  position: relative;
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const NavItem = styled(NavLink)`
-  position: relative;
-  text-decoration: none;
-  color: ${(props) => (props.activeClassName ? props.theme.primary : '#000000')};
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  font-weight: 600;
-  font-size: 16px;
-  &:hover,
-  &.active {
-    color: ${(props) => props.theme.primary};
-    box-shadow: inset 0 -2px 0 0 ${(props) => props.theme.primary};
-  }
-`;
-
 export class Navigation extends React.Component {
   constructor(props) {
     super(props);
@@ -55,15 +22,15 @@ export class Navigation extends React.Component {
     const { categories } = this.state;
     return (
       <ThemeProvider theme={theme}>
-        <NavigationWrapper className="header-navigation">
-          <NavList>
+        <Styles.NavigationWrapper className="header-navigation">
+          <Styles.NavList>
             {categories.map((category) => (
-              <NavItem key={category.name} to={`/${category.name}`}>
+              <Styles.NavItem key={category.name} to={`/${category.name}`}>
                 {category.name.toUpperCase()}
-              </NavItem>
+              </Styles.NavItem>
             ))}
-          </NavList>
-        </NavigationWrapper>
+          </Styles.NavList>
+        </Styles.NavigationWrapper>
       </ThemeProvider>
     );
   }
