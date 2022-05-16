@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as Styles from './styles';
-import { CartItem } from '../../components/Cart/CartItem';
+import { CartItem } from '../../components/Cart/CartItem/CartItem';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
 import { clearCart } from '../../redux/actions';
 

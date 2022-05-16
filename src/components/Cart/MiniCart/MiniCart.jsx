@@ -1,129 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CartItem } from './CartItem';
-import { clearCart } from '../../redux/actions';
-
-const MiniCartWrapper = styled.div`
-  position: relative;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row-reverse;
-  width: 100%;
-  max-width: 1440px;
-  box-sizing: border-box;
-  padding: 0 100px;
-`;
-
-const MiniCartContainer = styled.div`
-  position: relative;
-  right: -28px;
-  width: 325px;
-  ${(props) => (props.quantity > 0 ? (props.quantity > 1 ? 'height: 680px;' : 'height: 525px;') : 'height: 200px;')};
-  background: white;
-  overflow: hidden;
-`;
-
-const CartHeader = styled.p`
-  margin: 32px 16px;
-  font-size: 16px;
-  & span {
-    font-weight: 700;
-  }
-`;
-
-const NoItems = styled.h3`
-  margin-left: 20px;
-`;
-
-const CartItemContainer = styled.div`
-  ${(props) => (props.quantity > 0 ? (props.quantity > 1 ? 'height: 420px;' : 'height: 265px;') : 'height: 20px;')};
-  padding: 0;
-  overflow: hidden;
-  ul {
-    margin: 0;
-  }
-  &:hover {
-    overflow-y: overlay;
-  }
-  > *:not(:last-child) {
-    margin-bottom: 20px;
-  }
-  &::-webkit-scrollbar {
-    background-color: transparent;
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #babac0;
-    border-radius: 6px;
-  }
-  &::-webkit-scrollbar-button {
-    display: none;
-  }
-`;
-
-const MiniCartTotal = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 32px;
-  padding: 32px 16px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 32px;
-  & span:nth-child(2) {
-    font-weight: 700;
-  }
-`;
-
-const MiniCartButtons = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-  width: 100%;
-  height: 43px;
-  box-sizing: border-box;
-  padding: 0 16px;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  width: 100%;
-  height: inherit;
-  border: none;
-  background: none;
-  box-sizing: border-box;
-  border: 1px solid transparent;
-  font-family: Raleway;
-  font-weight: 600;
-  font-size: 14px;
-  color: black;
-`;
-
-const ViewBagButton = styled(Button)`
-  border: 1px solid black;
-  text-decoration: none;
-  text-align: center;
-  line-height: 43px;
-  &:hover {
-    background: #5ece7b;
-    border: 1px solid #5ece7b;
-    color: white;
-  }
-`;
-
-const CheckoutButton = styled(Button)`
-  background: #5ece7b;
-  color: white;
-  &:hover {
-    color: black;
-    border: 1px solid black;
-  }
-`;
+import { CartItem } from '../CartItem/CartItem';
+import { clearCart } from '../../../redux/actions';
+import * as Styles from './styles';
 
 export class MiniCartTemplate extends React.PureComponent {
   constructor(props) {
@@ -175,15 +56,15 @@ export class MiniCartTemplate extends React.PureComponent {
     const { allIds, byIds } = this.props.cart;
     const { hideModal } = this.props;
     return (
-      <MiniCartWrapper>
-        <MiniCartContainer quantity={allIds.length} ref={this.wrapperRef}>
+      <Styles.MiniCartWrapper>
+        <Styles.MiniCartContainer quantity={allIds.length} ref={this.wrapperRef}>
           {allIds.length > 0 ? (
             <>
-              <CartHeader>
+              <Styles.CartHeader>
                 {/* eslint-disable-next-line */}
                 <span>My bag,</span> {this.getQuantity()} items
-              </CartHeader>
-              <CartItemContainer quantity={allIds.length}>
+              </Styles.CartHeader>
+              <Styles.CartItemContainer quantity={allIds.length}>
                 {allIds.map((elem) => {
                   console.log(elem, byIds[elem]);
                   const { id, brand, name, options, prices, quantity } = byIds[elem];
@@ -203,23 +84,23 @@ export class MiniCartTemplate extends React.PureComponent {
                     />
                   );
                 })}
-              </CartItemContainer>
-              <MiniCartTotal>
+              </Styles.CartItemContainer>
+              <Styles.MiniCartTotal>
                 <span>Total</span>
                 <span>{this.getTotal()}</span>
-              </MiniCartTotal>
-              <MiniCartButtons>
-                <ViewBagButton as={NavLink} to="/cart" onClick={hideModal}>
+              </Styles.MiniCartTotal>
+              <Styles.MiniCartButtons>
+                <Styles.ViewBagButton as={NavLink} to="/cart" onClick={hideModal}>
                   VIEW BAG
-                </ViewBagButton>
-                <CheckoutButton onClick={this.props.clearCart}>CHECK OUT</CheckoutButton>
-              </MiniCartButtons>
+                </Styles.ViewBagButton>
+                <Styles.CheckoutButton onClick={this.props.clearCart}>CHECK OUT</Styles.CheckoutButton>
+              </Styles.MiniCartButtons>
             </>
           ) : (
-            <NoItems>No items in cart.</NoItems>
+            <Styles.NoItems>No items in cart.</Styles.NoItems>
           )}
-        </MiniCartContainer>
-      </MiniCartWrapper>
+        </Styles.MiniCartContainer>
+      </Styles.MiniCartWrapper>
     );
   }
 }
