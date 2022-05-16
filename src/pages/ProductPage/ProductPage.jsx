@@ -12,7 +12,6 @@ import { client } from '../../apollo/apollo';
 import { PRODUCT } from '../../queries/getProduct';
 import { currencyType } from '../../types';
 
-// eslint-disable-next-line
 const withRouter = (WrappedComponent) => () => {
   const match = { params: useParams() };
   return <WrappedComponent match={match} />;

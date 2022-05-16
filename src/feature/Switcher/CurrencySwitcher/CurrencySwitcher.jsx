@@ -74,12 +74,11 @@ export class CurrencySwitcherTemplate extends React.Component {
           {isOpen && (
             <Styles.DropDownListContainer>
               <Styles.DropDownList>
-                {/* eslint-disable-next-line */}
-                {currencies.map((currency, index) => {
-                  console.log(index, currency);
+                {currencies.map((currencyLocal, index) => {
+                  console.log(index, currencyLocal);
                   return (
-                    <Styles.ListItem onClick={this.onOptionClicked({ ...currency, index })} key={currency.label}>
-                      {`${currency.symbol} ${currency.label}`}
+                    <Styles.ListItem onClick={this.onOptionClicked({ ...currencyLocal, index })} key={currencyLocal.label}>
+                      {`${currencyLocal.symbol} ${currencyLocal.label}`}
                       {index === this.props.currency.index && <Styles.Checked />}
                     </Styles.ListItem>
                   );

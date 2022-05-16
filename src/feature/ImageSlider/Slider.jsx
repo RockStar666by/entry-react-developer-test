@@ -38,7 +38,6 @@ export class Slider extends React.PureComponent {
     console.log(currentImageIndex);
     return (
       <Styles.SliderContainer mini={mini}>
-        {/* eslint-disable-next-line */}
         {gallery.map((elem, index) => {
           console.log(index, currentImageIndex);
           return <Styles.SliderImage key={elem} src={elem} isActive={index === currentImageIndex} />;

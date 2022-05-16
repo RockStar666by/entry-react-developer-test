@@ -63,7 +63,6 @@ export class CategoryPage extends React.Component {
           {category === 'all' ? title : category.charAt(0).toUpperCase() + category.slice(1)}
         </Styles.CategoryPageTitle>
         <Styles.ProductsContainer>
-          {/* eslint-disable-next-line */}
           {itemsToShow.map((product) => {
             const { id, brand, name, attributes, prices, gallery, inStock } = product;
             console.log('ATTRIBUTES', name, attributes);

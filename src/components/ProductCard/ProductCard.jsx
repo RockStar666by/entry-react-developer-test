@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { string, func, arrayOf } from 'prop-types';
+import { string, func, arrayOf, bool } from 'prop-types';
 import { addToCart } from '../../redux/actions';
 import { Counter } from '../../feature/Counter/ProductCardCounter/Counter';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
@@ -54,9 +54,8 @@ export class ProductCardTemplate extends React.PureComponent {
 
   render() {
     const { isCartClicked, options, quantity } = this.state;
-    // eslint-disable-next-line
-    const { id, brand, name, gallery, attributes, prices, addedProducts, inStock, currency } = this.props;
-    console.log(id, addedProducts, this.state, currency);
+    const { id, brand, name, gallery, attributes, prices, inStock, currency } = this.props;
+    console.log(id, this.state, currency);
     return (
       <ThemeProvider theme={theme}>
         <Styles.ProductCardContainer isCartClicked={isCartClicked} ref={this.cartRef}>
@@ -122,5 +121,6 @@ ProductCardTemplate.propTypes = {
   addToCart: func.isRequired,
   gallery: arrayOf(string).isRequired,
   attributes: attributesType.isRequired,
-  prices: pricesType.isRequired
+  prices: pricesType.isRequired,
+  inStock: bool.isRequired
 };

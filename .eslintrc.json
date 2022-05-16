@@ -43,6 +43,16 @@
     "operator-linebreak": "off",
     "no-plusplus": "off",
     "no-param-reassign": "off",
-    "no-nested-ternary": "off"
+    "no-nested-ternary": "off",
+    "arrow-body-style": "off",
+    "no-confusing-arrow": "off",
+    "function-paren-newline": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "function-declaration"
+      }
+    ]
   }
 }

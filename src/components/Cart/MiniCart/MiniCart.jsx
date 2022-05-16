@@ -62,7 +62,6 @@ export class MiniCartTemplate extends React.PureComponent {
           {allIds.length > 0 ? (
             <>
               <Styles.CartHeader>
-                {/* eslint-disable-next-line */}
                 <span>My bag,</span> {this.getQuantity()} items
               </Styles.CartHeader>
               <Styles.CartItemContainer quantity={allIds.length}>

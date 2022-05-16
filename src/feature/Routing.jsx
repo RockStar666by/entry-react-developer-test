@@ -24,7 +24,6 @@ export class AppRouting extends React.Component {
     return (
       <Routes>
         <Route path="/" element={<CategoryPage />} />
-        {/* eslint-disable-next-line */}
         {categories.map((category) => {
           return <Route key={category.name} path={`/${category.name}`} element={<CategoryPage category={`${category.name}`} />} />;
         })}

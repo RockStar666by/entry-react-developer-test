@@ -41,27 +41,24 @@ export class ParamSwitcher extends React.Component {
         <Styles.ParamListContainer>
           <Styles.ParamHeader miniCart={miniCart}>{`${header}:`}</Styles.ParamHeader>
           <Styles.ParamList mini={mini} miniCart={miniCart}>
-            {options.map(
-              // eslint-disable-next-line
-              (option) =>
-                attrType === 'text' ? (
-                  <Styles.ListItem
-                    mini={mini}
-                    value={option.value}
-                    onClick={this.onOptionClicked(option, header)}
-                    active={this.state.currentOption.id === option.id}
-                    key={option.id}
-                  />
-                ) : (
-                  <Styles.ColorItem
-                    mini={mini}
-                    value={option.value}
-                    onClick={this.onOptionClicked(option)}
-                    active={this.state.currentOption.id === option.id}
-                    key={option.id}
-                  />
-                )
-              // eslint-disable-next-line
+            {options.map((option) =>
+              attrType === 'text' ? (
+                <Styles.ListItem
+                  mini={mini}
+                  value={option.value}
+                  onClick={this.onOptionClicked(option, header)}
+                  active={this.state.currentOption.id === option.id}
+                  key={option.id}
+                />
+              ) : (
+                <Styles.ColorItem
+                  mini={mini}
+                  value={option.value}
+                  onClick={this.onOptionClicked(option)}
+                  active={this.state.currentOption.id === option.id}
+                  key={option.id}
+                />
+              )
             )}
           </Styles.ParamList>
         </Styles.ParamListContainer>
