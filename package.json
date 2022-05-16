@@ -1,0 +1,59 @@
+{
+  "name": "entry-react-developer-test",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@apollo/client": "^3.6.1",
+    "@reduxjs/toolkit": "^1.8.1",
+    "graphql": "^16.4.0",
+    "interweave": "^13.0.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.0.0",
+    "react-redux": "^8.0.1",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "5.0.0",
+    "redux": "^4.2.0",
+    "redux-logger": "^3.0.6",
+    "styled-components": "^5.3.5",
+    "styled-reset": "^4.3.4",
+    "uuid": "^8.3.2",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.0.1",
+    "@testing-library/user-event": "^14.1.0",
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "^4.4.0"
+  }
+}
