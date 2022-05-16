@@ -7,7 +7,7 @@ import * as Styles from './styles';
 import { addToCart } from '../../redux/actions';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
 import { Gallery } from '../../feature/Gallery/Gallery';
-import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
+import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher/ParamSwitcher';
 import { client } from '../../apollo/apollo';
 import { PRODUCT } from '../../queries/getProduct';
 

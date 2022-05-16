@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteFromCart } from '../../redux/actions';
 import { Slider } from '../../feature/ImageSlider/Slider';
-import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
+import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher/ParamSwitcher';
 import { client } from '../../apollo/apollo';
 import { CartCounter } from '../../feature/Counter/CartCounter/CartCounter';
 import DeleteIcon from '../../assets/delete-button.svg';

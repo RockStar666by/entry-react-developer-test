@@ -7,7 +7,7 @@ import { addToCart } from '../../redux/actions';
 import CartIcon from '../../assets/cart-icon-white.svg';
 import { Counter } from '../../feature/Counter/ProductCardCounter/Counter';
 import { CustomButton } from '../../feature/CustomButton/CustomButton';
-import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher';
+import { ParamSwitcher } from '../../feature/Switcher/ParamSwitcher/ParamSwitcher';
 
 const theme = { primary: '#5ece7b' };
 
