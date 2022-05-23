@@ -38,7 +38,6 @@ export class ProductCardTemplate extends React.PureComponent {
 
   handleCartClicked() {
     this.setState({ isCartClicked: true });
-    console.log('Cart clicked!');
   }
 
   addSwitcherState(attribute) {
@@ -57,31 +56,28 @@ export class ProductCardTemplate extends React.PureComponent {
         <Styles.ProductCardContainer isCartClicked={isCartClicked} ref={this.cartRef}>
           {isCartClicked && (
             <Styles.CartOverlay>
-              {inStock ? (
-                <Styles.CartInfoContainer>
-                  {[...attributes]
-                    .sort((b, a) => a.type.localeCompare(b.type))
-                    .map((attribute) => (
-                      <ParamSwitcher
-                        key={attribute.id}
-                        mini
-                        header={attribute.name}
-                        options={attribute.items}
-                        attrType={attribute.type}
-                        addParentState={this.addSwitcherState}
-                      />
-                    ))}
-                  <Counter addParentState={this.addQuantityState} />
-                  <CustomButton wide actionOnClick={() => this.props.addToCart({ id, name, brand, options, quantity, prices })}>
-                    ADD TO CART
-                  </CustomButton>
-                </Styles.CartInfoContainer>
-              ) : (
-                <Styles.CartInfoContainer>
-                  <Styles.CartHeader>OUT OF STOCK</Styles.CartHeader>
-                  <CustomButton wide>ADD TO WISHLIST</CustomButton>
-                </Styles.CartInfoContainer>
-              )}
+              <Styles.CartInfoContainer>
+                {[...attributes]
+                  .sort((b, a) => a.type.localeCompare(b.type))
+                  .map((attribute) => (
+                    <ParamSwitcher
+                      key={attribute.id}
+                      mini
+                      header={attribute.name}
+                      options={attribute.items}
+                      attrType={attribute.type}
+                      addParentState={this.addSwitcherState}
+                    />
+                  ))}
+                <Counter addParentState={this.addQuantityState} />
+                <CustomButton
+                  wide
+                  disabled={!inStock}
+                  actionOnClick={inStock ? () => this.props.addToCart({ id, name, brand, options, quantity, prices }) : undefined}
+                >
+                  ADD TO CART
+                </CustomButton>
+              </Styles.CartInfoContainer>
             </Styles.CartOverlay>
           )}
           <Styles.ProductCardBox to={`/product/${id}`}>

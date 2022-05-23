@@ -56,7 +56,7 @@ export class CartItemTemplate extends React.PureComponent {
             </Styles.CustomLink>
             <Styles.PriceTag mini={mini}>
               {prices[currency.index].currency.symbol}
-              {(prices[currency.index].amount * quantity).toFixed(2)}
+              {prices[currency.index].amount.toFixed(2)}
             </Styles.PriceTag>
             <Styles.ParamSwitcherContainer mini={mini}>
               {[...attributes]

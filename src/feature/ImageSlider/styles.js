@@ -24,7 +24,8 @@ export const SliderContainer = styled.div`
 export const SliderImage = styled.img`
   position: absolute;
   height: 100%;
-  width: auto;
+  width: 100%;
+  object-fit: contain;
   opacity: 0;
   transition: opacity ease-in-out 0.4s;
   ${(props) => props.isActive && 'opacity: 1;'}
