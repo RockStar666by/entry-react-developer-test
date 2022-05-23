@@ -30,4 +30,8 @@ export const ButtonContainer = styled.button`
   &:hover {
     filter: drop-shadow(0px 4px 11px rgba(29, 31, 34, 0.1));
   }
+  &:disabled {
+    background: lightgrey;
+    pointer-events: none;
+  }
 `;

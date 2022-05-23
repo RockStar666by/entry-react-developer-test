@@ -64,38 +64,29 @@ export class ProductPageTemplate extends React.PureComponent {
         <Styles.ProductInfoContainer>
           <Styles.ProductInfoHeader>{brand}</Styles.ProductInfoHeader>
           <Styles.ProductInfoType>{name}</Styles.ProductInfoType>
-          {inStock ? (
-            <>
-              <Styles.ParamSwitchersContainer>
-                {[...attributes]
-                  .sort((b, a) => a.type.localeCompare(b.type))
-                  .map((attribute) => (
-                    <ParamSwitcher
-                      key={attribute.id}
-                      header={attribute.name.toUpperCase()}
-                      options={attribute.items}
-                      attrType={attribute.type}
-                      addParentState={this.addSwitcherState}
-                    />
-                  ))}
-              </Styles.ParamSwitchersContainer>
-              <Styles.PriceContainer>
-                <Styles.PriceHeader>PRICE:</Styles.PriceHeader>
-                <Styles.PriceTag>{`${prices[currency.index].currency.symbol} ${prices[currency.index].amount}`}</Styles.PriceTag>
-              </Styles.PriceContainer>
-              <CustomButton actionOnClick={() => this.props.addToCart({ id, name, brand, options, quantity: 1, prices })}>
-                ADD TO CART
-              </CustomButton>
-            </>
-          ) : (
-            <>
-              <Styles.PriceContainer>
-                <Styles.PriceTag>OUT OF STOCK</Styles.PriceTag>
-              </Styles.PriceContainer>
-              <CustomButton>ADD TO WISHLIST</CustomButton>
-            </>
-          )}
-
+          <Styles.ParamSwitchersContainer>
+            {[...attributes]
+              .sort((b, a) => a.type.localeCompare(b.type))
+              .map((attribute) => (
+                <ParamSwitcher
+                  key={attribute.id}
+                  header={attribute.name.toUpperCase()}
+                  options={attribute.items}
+                  attrType={attribute.type}
+                  addParentState={this.addSwitcherState}
+                />
+              ))}
+          </Styles.ParamSwitchersContainer>
+          <Styles.PriceContainer>
+            <Styles.PriceHeader>PRICE:</Styles.PriceHeader>
+            <Styles.PriceTag>{`${prices[currency.index].currency.symbol} ${prices[currency.index].amount}`}</Styles.PriceTag>
+          </Styles.PriceContainer>
+          <CustomButton
+            disabled={!inStock}
+            actionOnClick={inStock ? () => this.props.addToCart({ id, name, brand, options, quantity: 1, prices }) : undefined}
+          >
+            ADD TO CART
+          </CustomButton>
           <Styles.Description>
             <Markup noWrap content={description} />
           </Styles.Description>
@@ -106,7 +97,7 @@ export class ProductPageTemplate extends React.PureComponent {
 }
 
 function withRouter(WrappedComponent) {
-  return function () {
+  return function f() {
     const match = { params: useParams() };
     return <WrappedComponent match={match} />;
   };
